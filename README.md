@@ -9,9 +9,9 @@ The **CleverCloister** is a website for accruing my future productivity apps.
 * ## The Introductory Page  
     * [Home](https://nstapler.github.io/ClevCloi/home.html)  
 * ## Application Showcase  
-    * [Apps](https://nstapler.github.io/ClevCloi/home.html)  
+    * [Apps](https://nstapler.github.io/ClevCloi/apps.html)  
 * ## Contact Me 
-    * [Contact](https://nstapler.github.io/ClevCloi/home.html)  
+    * [Contact](https://nstapler.github.io/ClevCloi/contact.html)  
 
 I hope to later update this website to utilize more modern methods and frameworks as I improve as a developer.  
 For now, I will enjoy the simple proccess of problem-solving and creation.
