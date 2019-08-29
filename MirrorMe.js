@@ -12,6 +12,16 @@ $(document).ready(function () {
             $("<button>").prop("class","btn btn-info").text("Load").prop("id","loadB").click(loadPage)
             )
         );
+        var p =$("#modalsHere");
+        p.load("modals.html");
+//         $.ajax({
+//             url:"modals.html",
+//             method:"GET"
+//         }).done(d=>{
+// console.log("success");
+//         }).always(d=>{
+//             console.log("hi");
+//         }); 
     //buildApp();
 });
 function loadPage(){
@@ -20,7 +30,7 @@ function loadPage(){
 function newPage(){
     console.log("New Page");
     VM= new ViewManager();
-
+    VM.Initialize();
 }
 function buildApp() {
     //var div = $("#appRowDiv")

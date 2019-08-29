@@ -31,11 +31,14 @@ function Unit(U=null) {
 Unit.prototype.getTopic= function(){
     return this.Topic;
 };
-Unit.prototype.setTopic= function(topic){
+Unit.prototype.setTopic= function(topic="No Topic"){
     this.Topic=topic;
 };
-Unit.prototype.getDesc= function(){
+Unit.prototype.getDescription= function(){
     return this.Description;
+};
+Unit.prototype.setDescription= function(description=""){
+    this.Description=description;
 };
 Unit.prototype.created= function(){
     return this.dateCreated;
@@ -45,6 +48,9 @@ Unit.prototype.updated= function(){
 };
 Unit.prototype.getTags= function(){
     return this.Tags;
+};
+Unit.prototype.setTags= function(tags=[]){
+    this.Tags=tags;
 };
 Unit.prototype.getId= function(){
     return this.id;

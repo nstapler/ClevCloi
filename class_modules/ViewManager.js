@@ -19,9 +19,11 @@ function ViewManager(VM=null) {
         this.unitPlacements={};
     }
 }
-ViewManager.prototype.addUnit = function(topic){
+ViewManager.prototype.addUnit = function(topic,desc,tags){
     let unit = new Unit();
     unit.setTopic(topic);
+    unit.setDescription(desc);
+    unit.setTags(tags);
     unit.setId(this.identifier++);
     this.changeUnits(unit);
 };
@@ -29,4 +31,16 @@ ViewManager.prototype.changeUnits = function(unit){
     if(typeof(unit) === "object"){
         this.allUnits.push(unit);
     }
+};
+ViewManager.prototype.Initialize = function(){
+    // create modal
+    // create first unit
+    // get topic from form
+    //https://stackoverflow.com/questions/30298041/capture-close-event-on-bootstrap-modal/30303312
+    $('#newPageModal').modal('show');
+};
+ViewManager.prototype.displayUnit = function(unit){
+    //create holding div
+    //create video
+    //show description and title
 };
