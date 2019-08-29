@@ -1,0 +1,22 @@
+function Video(V=null) {
+    if(V && typeof(V)=="object"){
+        this.caption = V.caption;
+        this.video = V.video;
+    }else{
+        this.caption = "";
+        this.video = "";
+    }
+    
+}
+Video.prototype.getCaption = function(){
+    return this.caption;
+};
+Video.prototype.getVideo = function(){
+    return this.video;
+};
+Video.prototype.setCaption = function(cap){
+    this.caption=cap;
+};
+Video.prototype.save = function(blob){
+    this.video = blob;
+};

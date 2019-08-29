@@ -1,18 +1,38 @@
-function Unit() {
-    var d = new Date();
-    this.id = -1;
-    this.Topic ="";
-    this.Description ="";
-    this.dateCreated=d.toString();
-    this.lastUpdated="";
+function Unit(U=null) {
+    if(U && typeof(U)==="object"){
+        this.id = U.id;
+        this.Topic =U.Topic;
+        this.Description =U.Description;
+        this.dateCreated=U.dateCreated;
+        this.lastUpdated=U.lastUpdated;
+    
+        this.currentVideo = U.currentVideo;
+        this.VideoCollection = U.VideoCollection;
+        this.tags=U.tags;
 
-    this.currentVideo = null;
-    this.VideoCollection = [];
-    this.tags=[];
+        this.currentVideo = new Video(this.currentVideo);
+        this.VideoCollection = this.VideoCollection.map((v)=>{
+            return new Video(v);
+        });
+    }else{
+        var d = new Date();
+        this.id = -1;
+        this.Topic ="";
+        this.Description ="";
+        this.dateCreated=d.toString();
+        this.lastUpdated="";
+    
+        this.currentVideo = null;
+        this.VideoCollection = [];
+        this.tags=[];
+    }
     
 }
 Unit.prototype.getTopic= function(){
-    return this.Unit;
+    return this.Topic;
+};
+Unit.prototype.setTopic= function(topic){
+    this.Topic=topic;
 };
 Unit.prototype.getDesc= function(){
     return this.Description;

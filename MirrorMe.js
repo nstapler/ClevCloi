@@ -1,16 +1,36 @@
-$(document).ready(function () {
-    buildApp();
-});
+// import Video from './Video.js';
+// import Unit from "/class_modules/Units.js";
+// import ViewManager from "/class_modules/ViewManager.js";
+// import FileConverter from "/class_modules/FileConverter.js";
+var VM;
+var FC;
 
+$(document).ready(function () {
+    $("#appRowsDiv").append(
+        $("<div>").prop("class","row justify-content-center").append(
+            $("<button>").prop("class","btn btn-success").text("New").prop("id","newB").click(newPage),
+            $("<button>").prop("class","btn btn-info").text("Load").prop("id","loadB").click(loadPage)
+            )
+        );
+    //buildApp();
+});
+function loadPage(){
+    console.log("loading");
+}
+function newPage(){
+    console.log("New Page");
+    VM= new ViewManager();
+
+}
 function buildApp() {
     //var div = $("#appRowDiv")
     var vidId = "video" + 1;
-    var row = $("<div></div>").prop("class", "row my-5 py-3 px-5 bg-danger");
-    //var col = $("<div></div>").prop("class","col-12 align-items-center");
+    var row = $("<div>").prop("class", "row my-5 py-3 px-5 bg-danger");
+    //var col = $("<div>").prop("class","col-12 align-items-center");
     var vid = $("<video id='" + vidId + "' playsinline class='video-js vjs-default-skin col-4'></video>");
-    var info = $("<div></div>").prop("class", "col-8 px-5");
-    var title = $("<div></div>").prop("class", "bg-primary").append($("<h3>Title</h3>").prop("class", "font-weight-bold text-dark"));
-    var descr = $("<div></div>").prop("class", "bg-primary").append($("<p>Description</p>").prop("class", "text-left text-dark"));
+    var info = $("<div>").prop("class", "col-8 px-5");
+    var title = $("<div>").prop("class", "bg-primary").append($("<h3>Title</h3>").prop("class", "font-weight-bold text-dark"));
+    var descr = $("<div>").prop("class", "bg-primary").append($("<p>Description</p>").prop("class", "text-left text-dark"));
     $("#appRowsDiv").after(row);
     var button = $("<button></button>").prop("class", "btn btn-success").text("Start");
     var b2 = button.clone(true).prop("class", "btn btn-dark").text("Stop");
