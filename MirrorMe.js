@@ -7,11 +7,12 @@ var FC;
 
 $(document).ready(function () {
     $("#appRowsDiv").append(
-        $("<div>").prop("class","row justify-content-center").append(
-            $("<button>").prop("class","btn btn-success").text("New").prop("id","newB").click(newPage),
-            $("<button>").prop("class","btn btn-info").text("Load").prop("id","loadB").click(loadPage)
-            )
-        );
+        $("<div>").prop("class","row justify-content-center m-2 ").append(
+            $("<div>").prop("class","col-4 bg-dark align-items-center").append(
+                $("<button>").prop("class","btn btn-success btn-lg m-2 p-5 align-self-center").text("New").prop("id","newB").click(newPage),
+                $("<button>").prop("class","btn btn-info btn-lg m-2 p-5 align-self-center").text("Load").prop("id","loadB").click(loadPage)
+                )
+        ));
         var p =$("#modalsHere");
         p.load("modal-templates.html");
 
