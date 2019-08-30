@@ -1,4 +1,4 @@
-<div id="newUnitHeader">
+<div id="newUnitHeader" class="needs-validation" novalidate>
         <h5 class="modal-title" id="newPageModalTitle">Topic-Unit Creation</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -9,6 +9,9 @@
     <div class="form-group">
       <label for="topicInput">Topic</label>
       <input type="text" class="form-control" id="topicInput" placeholder="Describe a time when you encountered conflict at work" required>
+      <div class="invalid-feedback">
+            Please choose a Topic/Title.
+          </div>
       <small id="topicHelpInline" class="text-muted">
         An identifier for groups of video repsonses
       </small>

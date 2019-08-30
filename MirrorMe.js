@@ -14,9 +14,42 @@ $(document).ready(function () {
         );
         var p =$("#modalsHere");
         p.load("modal-templates.html");
-        
+
     //buildApp();
 });
+function saveUnit(evt){
+    //alert("hi");
+    var form =$("#newPageModal form");
+    var validForm=true;
+    var inputMap={};
+    form.submit(evt=>{
+        var formDom = form[0];
+        var inputs =formDom.elements;
+        $(inputs).each((index,ele)=>{
+            if(ele.checkValidity()){
+                let field =$(ele).prev().text();
+                let val =$(ele).val();
+                inputMap[field]=val;
+                $(ele).removeClass("is-invalid");
+            }else{
+                $(ele).removeClass("is-valid");
+                $(ele).addClass("is-invalid");
+                validForm=false;           
+            }
+        });
+        evt.preventDefault();
+        evt.stopPropagation();
+    });
+    form.submit();
+    if(validForm){
+        VM.addUnit(inputMap);
+        $('#newPageModal').modal('hide');
+        // rename newpage to rest
+        $("#newB").text("Reset");
+        //display the unit
+    }  
+    //console.log(evt);
+}
 function loadPage(){
     console.log("loading");
 }
