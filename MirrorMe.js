@@ -13,15 +13,8 @@ $(document).ready(function () {
             )
         );
         var p =$("#modalsHere");
-        p.load("modals.html");
-//         $.ajax({
-//             url:"modals.html",
-//             method:"GET"
-//         }).done(d=>{
-// console.log("success");
-//         }).always(d=>{
-//             console.log("hi");
-//         }); 
+        p.load("modal-templates.html");
+        
     //buildApp();
 });
 function loadPage(){

@@ -37,6 +37,8 @@ ViewManager.prototype.Initialize = function(){
     // create first unit
     // get topic from form
     //https://stackoverflow.com/questions/30298041/capture-close-event-on-bootstrap-modal/30303312
+    $('#newPageModal .modal-header').empty().load("New-Unit-Form.html #newUnitHeader *");
+    $('#newPageModal .modal-body').load("New-Unit-Form.html #newUnitBody");
     $('#newPageModal').modal('show');
 };
 ViewManager.prototype.displayUnit = function(unit){
