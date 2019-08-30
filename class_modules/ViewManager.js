@@ -14,7 +14,22 @@ function ViewManager(VM = null) {
         this.unitPlacements = VM.unitPlacements;
     } else {
         this.identifier = 0;
-        this.settings = {};
+        this.settings = {
+            videoOptions:{
+                controls: true,
+                width: 400,
+                height: 300,
+                fluid: false,
+                plugins: {
+                    record: {
+                        audio: true,
+                        video: true,
+                        maxLength: 10,
+                        debug: true
+                    }
+                }
+            }
+        };
         this.allUnits = [];
         this.unitPlacements = {};
     }
@@ -66,18 +81,33 @@ ViewManager.prototype.displayUnit = function (unit) {
     //create video
     //show description and title
     if(typeof(unit)=="object"){
-        var cId ="unitContainer"+unit.getId();
-        var iID ="unit_"+unit.getId();
+        var cId ="unitContainer"+unit.getId(); // unit container
+        var iId ="unit_"+unit.getId(); // response item
+        var vId ="currentVideo_"+unit.getId();
         $("#appRowsDiv").append(
             $("<div>").prop("id",cId).prop("class","row justify-content-center m-2 bg-success")
             );
         $("#"+cId).load("html_templates/unitTemplate.html",evt=>{
-            $("#"+cId+" *").addClass(iID);
+            $("#"+cId+" *").addClass(iId);
+            //load in the video and if their is a current load that in too
+            $("#"+cId+" .mainResponse .videoPlayer").load("html_templates/video_template.html",(evt)=>{
+                $("#"+cId+" .mainResponse .videoPlayer video").addClass(iId).prop("id",vId);
+                // set to current vid if has one
+                var settings = this.getOptions();
+                setVideoPlayer(vId,settings.videoOptions);
+
+            });
+            $("#"+cId+" .mainResponse .unitTopic").text(unit.getTopic());
+            $("#"+cId+" .mainResponse .unitDescr").text(unit.getDescription());
+            //load in the prev video if exist
+            $("#"+cId+" .prevResponses");
         });
         
 
-    }
-    
+    }  
+};
+ViewManager.prototype.getOptions=function(){
+return this.settings;
 };
 ViewManager.prototype.getUnits=function(){
     return this.allUnits;
