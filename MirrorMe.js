@@ -14,7 +14,7 @@ $(document).ready(function () {
                 )
         ));
         var p =$("#modalsHere");
-        p.load("modal-templates.html");
+        p.load("html_templates/modal-templates.html");
 
     //buildApp();
 });
@@ -23,30 +23,30 @@ function saveUnit(evt){
     var form =$("#newPageModal form");
     var validForm=true;
     var inputMap={};
-    form.submit(evt=>{
-        var formDom = form[0];
-        var inputs =formDom.elements;
-        $(inputs).each((index,ele)=>{
-            if(ele.checkValidity()){
-                let field =$(ele).prev().text();
-                let val =$(ele).val();
-                inputMap[field]=val;
-                $(ele).removeClass("is-invalid");
-            }else{
-                $(ele).removeClass("is-valid");
-                $(ele).addClass("is-invalid");
-                validForm=false;           
-            }
-        });
-        evt.preventDefault();
-        evt.stopPropagation();
+    // form.submit(evt=>{
+    // });// form.submit();
+    var formDom = form[0];
+    var inputs = formDom.elements;
+    $(inputs).each((index, ele) => {
+        if (ele.checkValidity()) {
+            let field = $(ele).prev().text();
+            let val = $(ele).val();
+            inputMap[field] = val;
+            $(ele).removeClass("is-invalid");
+        } else {
+            $(ele).removeClass("is-valid");
+            $(ele).addClass("is-invalid");
+            validForm = false;
+        }
     });
-    form.submit();
+    evt.preventDefault();
+    evt.stopPropagation();
     if(validForm){
         VM.addUnit(inputMap);
         $('#newPageModal').modal('hide');
         // rename newpage to rest
         $("#newB").text("Reset");
+        VM.showAllUnits();
         //display the unit
     }  
     //console.log(evt);
