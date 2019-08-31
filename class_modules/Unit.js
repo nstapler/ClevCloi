@@ -7,6 +7,7 @@ function Unit(U=null) {
         this.lastUpdated=U.lastUpdated;
     
         this.currentVideo = U.currentVideo;
+        this.TemporaryBlob =null;
         this.VideoCollection = U.VideoCollection;
         this.tags=U.tags;
 
@@ -23,11 +24,33 @@ function Unit(U=null) {
         this.lastUpdated="";
     
         this.currentVideo = null;
+        this.TemporaryBlob =null;
         this.VideoCollection = [];
         this.tags=[];
     }
     
 }
+Unit.prototype.save=function(){
+    var inputObj = getFormInputs();
+    if(inputObj){
+        $('#modalTemplate').modal('hide');
+        inputObj.blob=this.getTemp();
+        var vid = new Video;
+        vid.setVideo(inputObj);
+
+
+        this.addVideo(vid);
+        this.TemporaryBlob=null;
+        //show the video in the recent
+    }
+    
+};
+Unit.prototype.getTemp = function(){
+    return this.TemporaryBlob;
+};
+Unit.prototype.saveTemp=function(blob){
+    this.TemporaryBlob=blob;
+};
 Unit.prototype.getTopic= function(){
     return this.Topic;
 };

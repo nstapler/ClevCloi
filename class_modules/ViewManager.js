@@ -66,24 +66,15 @@ ViewManager.prototype.changeUnits = function (unit) {
         this.allUnits.push(unit);
     }
 };
-ViewManager.prototype.Initialize = function () {
-    // create modal
-    // create first unit
-    // get topic from form
-    //https://stackoverflow.com/questions/30298041/capture-close-event-on-bootstrap-modal/30303312
-    $('#newPageModal .modal-header').empty().load("html_templates/New-Unit-Form.html #newUnitHeader *");
-    $('#newPageModal .modal-body').load("html_templates/New-Unit-Form.html #newUnitBody");
-    $('#newPageModal #modalSave').click(saveUnit);
-    $('#newPageModal').modal('show');
-};
 ViewManager.prototype.displayUnit = function (unit) {
     //create holding div
     //create video
     //show description and title
     if(typeof(unit)=="object"){
-        var cId ="unitContainer"+unit.getId(); // unit container
-        var iId ="unit_"+unit.getId(); // response item
-        var vId ="currentVideo_"+unit.getId();
+        var id =unit.getId();
+        var cId ="unitContainer_"+ id; // unit container
+        var iId ="unit_"+id; // response item
+        var vId ="currentVideo_"+id;
         $("#appRowsDiv").append(
             $("<div>").prop("id",cId).prop("class","row justify-content-center m-2 bg-success")
             );
@@ -97,6 +88,9 @@ ViewManager.prototype.displayUnit = function (unit) {
                 setVideoPlayer(vId,settings.videoOptions);
 
             });
+            $("#"+cId+" .mainResponse .videoSaveButton").click((evt)=>{
+                Save_B(unit);
+            }).css("visibility","hidden");
             $("#"+cId+" .mainResponse .unitTopic").text(unit.getTopic());
             $("#"+cId+" .mainResponse .unitDescr").text(unit.getDescription());
             //load in the prev video if exist
@@ -109,6 +103,11 @@ ViewManager.prototype.displayUnit = function (unit) {
 ViewManager.prototype.getOptions=function(){
 return this.settings;
 };
+ViewManager.prototype.getUnit=function(identifier){
+    return (this.getUnits().find((u)=>{
+        return u.getId()==identifier;
+    }));
+};
 ViewManager.prototype.getUnits=function(){
     return this.allUnits;
 };
@@ -117,4 +116,13 @@ ViewManager.prototype.showAllUnits=function(){
     units.forEach((u)=>{
         this.displayUnit(u);
     });
+};
+ViewManager.prototype.saveUnit=function(arg){
+    var inputObj = getFormInputs();
+    if(inputObj){
+        this.addUnit(inputObj);
+        $('#modalTemplate').modal('hide');
+        $("#newB").text("Reset");
+        this.showAllUnits();
+    }
 };

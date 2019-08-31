@@ -8,6 +8,26 @@ function Video(V=null) {
     }
     
 }
+Video.prototype.setVideo=function(inputObj){
+    if(typeof(inputObj)=="object"){
+        var fields = Object.keys(inputObj);
+        fields.forEach((f) => {
+            switch (f.toLowerCase()) {
+                case "caption":
+                    this.setCaption(inputObj[f]);
+                    break;
+                    case "blob":
+                        this.save(inputObj[f]);
+                        break;
+                default:
+                    console.log("Unexpected field found: " + f);
+                    break;
+            }
+        });
+    }else{
+        alert("please Submit valid unit object");
+    }
+};
 Video.prototype.getCaption = function(){
     return this.caption;
 };

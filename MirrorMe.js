@@ -9,18 +9,61 @@ $(document).ready(function () {
     $("#appRowsDiv").append(
         $("<div>").prop("class","row justify-content-center m-2 ").append(
             $("<div>").prop("class","col-4 align-items-center").append(
-                $("<button>").prop("class","btn btn-success btn-lg m-2 p-5 align-self-center").text("New").prop("id","newB").click(newPage),
-                $("<button>").prop("class","btn btn-info btn-lg m-2 p-5 align-self-center").text("Load").prop("id","loadB").click(loadPage)
+                $("<button>").prop("class","btn btn-success btn-lg m-2 p-5 align-self-center").text("New").prop("id","newB").click(NewPage_B),
+                $("<button>").prop("class","btn btn-info btn-lg m-2 p-5 align-self-center").text("Load").prop("id","loadB").click(LoadPage_B)
                 )
         ));
-        var p =$("#modalsHere");
-        p.load("html_templates/modal-templates.html");
-
     //buildApp();
 });
-function saveUnit(evt){
-    //alert("hi");
-    var form =$("#newPageModal form");
+function LoadPage_B(){
+    console.log("loading");
+}
+function NewPage_B(){
+    console.log("New Page");
+    VM= new ViewManager();
+    var p =$("#modalsHere");
+    p.empty();
+    var saveUnit = VM.saveUnit.bind(VM);
+    p.load("html_templates/modal-templates.html",(evt)=>{
+        $('#modalTemplate .modal-header').empty().load("html_templates/New-Unit-Form.html #newUnitHeader *",(evt)=>{
+            $('#modalTemplate .modal-body').empty().load("html_templates/New-Unit-Form.html #newUnitBody",(evt)=>{
+                $('#modalTemplate #modalSave').text("Create Unit").off("click").click(saveUnit);
+                $('#modalTemplate').modal('show');
+            });
+        });
+        
+        
+    });
+    
+}
+function Save_B(unit){
+    // open a modal with the data and with
+    //caption text input
+    var saveVideo = unit.save.bind(unit);
+    $('#modalTemplate .modal-header').empty().load("html_templates/New-Video-Form.html #newVideoHeader *",(evt)=>{
+        $('#modalTemplate .modal-body').empty().load("html_templates/New-Video-Form.html #newVideoBody",(evt)=>{
+            var videoInfo = unit.getTemp();
+            var detArea = $("#newVideoBody #videoDetails");
+            Object.keys(videoInfo).forEach((f)=>{
+                detArea.append(
+                    $("<div>").prop("class","row border border-dark").append(
+                        $("<div>").prop("class","col-4 border-right border-dark").append(
+                            $("<p>").prop("class",".text-break").text(f)
+                                
+                        ),
+                        $("<div>").prop("class","col-8").append(
+                            $("<p>").text(videoInfo[f])
+                        )
+                    ) 
+                );
+            });
+            $('#modalTemplate #modalSave').text("Save Video").off("click").click(saveVideo);
+            $('#modalTemplate').modal('show');
+        });
+    });
+}
+function getFormInputs(){
+    var form =$("#modalTemplate form");
     var validForm=true;
     var inputMap={};
     // form.submit(evt=>{
@@ -39,25 +82,16 @@ function saveUnit(evt){
             validForm = false;
         }
     });
-    evt.preventDefault();
-    evt.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
     if(validForm){
-        VM.addUnit(inputMap);
-        $('#newPageModal').modal('hide');
-        // rename newpage to rest
-        $("#newB").text("Reset");
-        VM.showAllUnits();
-        //display the unit
-    }  
-    //console.log(evt);
+        return inputMap;
+    }else{
+        return null;
+    }
 }
-function loadPage(){
-    console.log("loading");
-}
-function newPage(){
-    console.log("New Page");
-    VM= new ViewManager();
-    VM.Initialize();
+function Delete_B(){
+
 }
 function setVideoPlayer(vidId,options){
     var player = videojs(vidId, options, function () {
@@ -84,7 +118,13 @@ function setVideoPlayer(vidId,options){
         // the blob object contains the recorded data that
         // can be downloaded by the user, stored on server etc.
         console.log('finished recording: ', player.recordedData);
-
+        var playerInfo = player.tagAttributes; //.class .id
+        var vidId = playerInfo.id;
+        var id = vidId.split("_")[1];
+        var unit = VM.getUnit(id);
+        unit.saveTemp(player.recordedData);
+        $("#unitContainer_"+id+" .mainResponse .videoSaveButton").css("visibility","visible");
+        //reveal save button?
         //keeps temorarily
         //stores immediately as a node 
         //on hover show a preview
