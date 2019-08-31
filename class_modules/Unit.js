@@ -30,68 +30,94 @@ function Unit(U=null) {
     }
     
 }
-Unit.prototype.save=function(){
+
+Unit.prototype.getTemp = function(){
+    return this.TemporaryBlob;
+};
+
+Unit.prototype.getTopic= function(){
+    return this.Topic;
+};
+Unit.prototype.getDescription= function(){
+    return this.Description;
+};
+Unit.prototype.getTags= function(){
+    return this.Tags;
+};
+Unit.prototype.updated= function(){
+    return this.lastUpdated;
+};
+Unit.prototype.created= function(){
+    return this.dateCreated;
+};
+Unit.prototype.getId= function(){
+    return this.id;
+};
+Unit.prototype.getCurrent= function(){
+    return this.currentVideo;
+};
+
+
+
+Unit.prototype.saveNew=function(){
     var inputObj = getFormInputs();
     if(inputObj){
         $('#modalTemplate').modal('hide');
         inputObj.blob=this.getTemp();
-        var vid = new Video;
+        var vid = new Video();
         vid.setVideo(inputObj);
 
 
         this.addVideo(vid);
         this.TemporaryBlob=null;
         //show the video in the recent
+        $("#unitContainer_"+this.getId()+" .mainResponse .videoSaveButton").css("visibility","hidden");
     }
     
 };
-Unit.prototype.getTemp = function(){
-    return this.TemporaryBlob;
-};
+
 Unit.prototype.saveTemp=function(blob){
     this.TemporaryBlob=blob;
+    this.update();
 };
-Unit.prototype.getTopic= function(){
-    return this.Topic;
-};
+
 Unit.prototype.setTopic= function(topic="No Topic"){
     this.Topic=topic;
+    this.update();
 };
-Unit.prototype.getDescription= function(){
-    return this.Description;
-};
+
 Unit.prototype.setDescription= function(description=""){
     this.Description=description;
+    this.update();
 };
-Unit.prototype.created= function(){
-    return this.dateCreated;
+
+Unit.prototype.update = function(){
+    var d = new Date();
+    this.lastUpdated=d.toString();
 };
-Unit.prototype.updated= function(){
-    return this.lastUpdated;
-};
-Unit.prototype.getTags= function(){
-    return this.Tags;
-};
+
 Unit.prototype.setTags= function(tags=[]){
     this.Tags=tags;
+    this.update();
 };
-Unit.prototype.getId= function(){
-    return this.id;
-};
+
 Unit.prototype.setId= function(id){
     this.id = id;
 };
-Unit.prototype.getCurrent= function(){
-    return this.currentVideo;
-};
+
 Unit.prototype.addVideo = function(video){
     this.VideoCollection.push(video);
+    this.update();
 };
+
 Unit.prototype.changeCurrent = function(video){
     //when change current, update the video
     this.currentVideo= video;
+    this.update();
     //update the dom?
+    this.update();
 };
+
 Unit.prototype.pickVideo = function(index){
     if(index<=this.VideoCollection.length-1 && index >= 0  ){
         this.changeCurrent(this.VideoCollection.splice(index,1));

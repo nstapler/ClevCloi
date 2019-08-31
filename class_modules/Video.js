@@ -15,13 +15,13 @@ Video.prototype.setVideo=function(inputObj){
             switch (f.toLowerCase()) {
                 case "caption":
                     this.setCaption(inputObj[f]);
-                    break;
+                break;
                     case "blob":
-                        this.save(inputObj[f]);
-                        break;
+                    this.save(inputObj[f]);
+                break;
                 default:
                     console.log("Unexpected field found: " + f);
-                    break;
+                break;
             }
         });
     }else{
