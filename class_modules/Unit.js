@@ -5,7 +5,9 @@ function Unit(U=null) {
         this.Description =U.Description;
         this.dateCreated=U.dateCreated;
         this.lastUpdated=U.lastUpdated;
-    
+        this.vIdentifier=U.vIdentifier;
+
+
         this.currentVideo = U.currentVideo;
         this.TemporaryBlob =null;
         this.VideoCollection = U.VideoCollection;
@@ -22,13 +24,18 @@ function Unit(U=null) {
         this.Description ="";
         this.dateCreated=d.toString();
         this.lastUpdated="";
-    
+        this.vIdentifier=0;
+
         this.currentVideo = null;
         this.TemporaryBlob =null;
         this.VideoCollection = [];
         this.tags=[];
     }
     
+}
+
+Unit.prototype.getResponses=function(){
+    return this.VideoCollection;
 }
 
 Unit.prototype.getTemp = function(){
@@ -66,7 +73,7 @@ Unit.prototype.saveNew=function(){
         inputObj.blob=this.getTemp();
         var vid = new Video();
         vid.setVideo(inputObj);
-
+        vid.setId(this.vIdentifier++);
 
         this.addVideo(vid);
         this.TemporaryBlob=null;

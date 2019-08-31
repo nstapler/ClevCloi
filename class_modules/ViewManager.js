@@ -8,12 +8,12 @@
 //Control Extra Looks
 function ViewManager(VM = null) {
     if (VM && typeof (VM) === "object") {
-        this.identifier = VM.identifier;
+        this._uIdentifier = VM._uIdentifier;
         this.settings = VM.settings;
         this.allUnits = VM.allUnits;
         this.unitPlacements = VM.unitPlacements;
     } else {
-        this.identifier = 0;
+        this._uIdentifier = 0;
         this.settings = {
             videoOptions:{
                 controls: true,
@@ -54,7 +54,7 @@ ViewManager.prototype.addUnit = function (unitObj) {
                     break;
             }
         });
-        unit.setId(this.identifier++);
+        unit.setId(this._uIdentifier++);
         this.changeUnits(unit);
     }else{
         alert("please Submit valid unit object");
@@ -66,6 +66,42 @@ ViewManager.prototype.changeUnits = function (unit) {
         this.allUnits.push(unit);
     }
 };
+ViewManager.prototype.displayUnitCurrent=function(uId){
+//check for the
+    var unit =this.getUnit(uId);
+    var cId ="unitContainer_"+ uId; // unit container
+    var iId ="unit_"+uId; // response item
+    var vId ="currentVideo_"+uId;
+    $("#"+cId+" .mainResponse .videoPlayer").load("html_templates/video_template.html",(evt)=>{
+        $("#"+cId+" .mainResponse .videoPlayer video").addClass(iId).prop("id",vId);
+        // set to current vid if has one
+        var settings = this.getOptions();
+        setVideoPlayer(vId,settings.videoOptions);
+
+    });
+    $("#"+cId+" .mainResponse .videoSaveButton").click((evt)=>{
+        Save_B(unit);
+    }).css("visibility","hidden");
+    $("#"+cId+" .mainResponse .unitTopic").text(unit.getTopic());
+    $("#"+cId+" .mainResponse .unitDescr").text(unit.getDescription());
+};
+ViewManager.prototype.displayUnitSaved=function(uId,vId){
+    var rId=vId;
+    var cId ="unitContainer_"+ uId; // unit container
+    var resC = $("#"+cId+" .savedResponses");
+    resC.append(
+        $("<div>").prop("class","row bg-light m-2").addClass(iId+" savedResponse"+rId).load(
+            "/html_templates/savedVideo_template.html",
+            (evt)=>{
+                var resWhole =$("#"+cId+" .savedResponses .savedResponse"+rId).addClass(iId+" savedResponse"+rId);
+                resWhole.find("#savedResponseVid");
+                resWhole.find("#savedResponseCap").text(r.getCaption());
+                resWhole.find("#savedResponseActions").load("/html_templates/responseButtons.html",(evt)=>{
+                    //click on the buttons
+                });
+            })
+        );
+};
 ViewManager.prototype.displayUnit = function (unit) {
     //create holding div
     //create video
@@ -75,37 +111,31 @@ ViewManager.prototype.displayUnit = function (unit) {
         var cId ="unitContainer_"+ id; // unit container
         var iId ="unit_"+id; // response item
         var vId ="currentVideo_"+id;
-        $("#appRowsDiv").append(
-            $("<div>").prop("id",cId).prop("class","row justify-content-center m-2 bg-success")
-            );
-        $("#"+cId).load("html_templates/unitTemplate.html",evt=>{
-            $("#"+cId+" *").addClass(iId);
-            //load in the video and if their is a current load that in too
-            $("#"+cId+" .mainResponse .videoPlayer").load("html_templates/video_template.html",(evt)=>{
-                $("#"+cId+" .mainResponse .videoPlayer video").addClass(iId).prop("id",vId);
-                // set to current vid if has one
-                var settings = this.getOptions();
-                setVideoPlayer(vId,settings.videoOptions);
-
-            });
-            $("#"+cId+" .mainResponse .videoSaveButton").click((evt)=>{
-                Save_B(unit);
-            }).css("visibility","hidden");
-            $("#"+cId+" .mainResponse .unitTopic").text(unit.getTopic());
-            $("#"+cId+" .mainResponse .unitDescr").text(unit.getDescription());
-            //load in the prev video if exist
-            $("#"+cId+" .prevResponses");
-        });
-        
+        var uContainer =$("#"+cId);
+        if(!uContainer || uContainer.length<1){
+            $("#appRowsDiv").append(
+                $("<div>").prop("id",cId).prop("class","row justify-content-center m-2 bg-success")
+                );
+                $("#"+cId).load("html_templates/unitTemplate.html",evt=>{
+                    $("#"+cId+" *").addClass(iId);
+                    this.displayUnitCurrent(id);
+                    unit.getResponses().forEach((r)=>{
+                        this.displayUnitSaved(id,r.getId());
+                    });
+                });
+                
+        }else{
+            //empty or update?
+        }
 
     }  
 };
 ViewManager.prototype.getOptions=function(){
 return this.settings;
 };
-ViewManager.prototype.getUnit=function(identifier){
+ViewManager.prototype.getUnit=function(uIdentifier){
     return (this.getUnits().find((u)=>{
-        return u.getId()==identifier;
+        return u.getId()==uIdentifier;
     }));
 };
 ViewManager.prototype.getUnits=function(){

@@ -2,9 +2,11 @@ function Video(V=null) {
     if(V && typeof(V)=="object"){
         this.caption = V.caption;
         this.video = V.video;
+        this.id =V.id;
     }else{
         this.caption = "";
         this.video = "";
+        this.id=null;
     }
     
 }
@@ -30,6 +32,12 @@ Video.prototype.setVideo=function(inputObj){
 };
 Video.prototype.getCaption = function(){
     return this.caption;
+};
+Video.prototype.setId=function(id){
+    this.id=id;
+};
+Video.prototype.getId=function(){
+    return this.id;
 };
 Video.prototype.getVideo = function(){
     return this.video;
