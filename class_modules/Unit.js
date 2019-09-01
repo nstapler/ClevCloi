@@ -9,12 +9,12 @@ function Unit(U=null) {
 
 
         this.currentVideo = U.currentVideo;
-        this.PreviousBlob =null;
+        this.PreviousBlob =U.PreviousBlob;
         this.VideoCollection = U.VideoCollection;
         this.tags=U.tags;
 
-        this.currentVideo = new Video(this.currentVideo);
-        this.VideoCollection = this.VideoCollection.map((v)=>{
+        this.currentVideo = new Video(U.currentVideo);
+        this.VideoCollection = U.VideoCollection.map((v)=>{
             return new Video(v);
         });
     }else{
@@ -107,7 +107,7 @@ Unit.prototype.saveVideo=function(){
         this.addVideo(vid);
         //this.PreviousBlob=null;
         //show the video in the recent
-        $("#unitContainer_"+this.getId()+" .mainResponse .videoSaveButton").css("visibility","hidden");
+        //$("#unitContainer_"+this.getId()+" .mainResponse .videoSaveButton").css("visibility","hidden");
     }
     
 };
@@ -151,14 +151,17 @@ Unit.prototype.changeCurrent = function(video){
     //when change current, update the video
     this.currentVideo= video;
     this.update();
-    //update the dom?
-    this.update();
+    //load the video onto the video player
+    var uId = this.getId();
+    var cId ="unitContainer_"+ uId; // unit container
+    var blob =video.getBlob();
+    var src =window.URL.createObjectURL(blob);
+    $("#"+cId+" .mainResponse .videoPlayer video").attr("src",src);
+    //highlight the tile
 };
 
-Unit.prototype.pickVideo = function(index){
-    if(index<=this.VideoCollection.length-1 && index >= 0  ){
-        this.changeCurrent(this.VideoCollection.splice(index,1));
-    }
+Unit.prototype.pickVideo = function(vId){
+    this.changeCurrent(this.getVideo(vId));
 };
 Unit.prototype.deleteVideo=function(vId){
     var cId ="unitContainer_"+ this.getId(); // unit container

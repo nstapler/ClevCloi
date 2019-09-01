@@ -1,11 +1,11 @@
 function Video(V=null) {
     if(V && typeof(V)=="object"){
         this.caption = V.caption;
-        this.video = V.video;
+        this.Blob = V.Blob;
         this.id =V.id;
     }else{
         this.caption = "";
-        this.video = "";
+        this.Blob= "";
         this.id=null;
     }
     
@@ -39,12 +39,12 @@ Video.prototype.setId=function(id){
 Video.prototype.getId=function(){
     return this.id;
 };
-Video.prototype.getVideo = function(){
-    return this.video;
+Video.prototype.getBlob = function(){
+    return this.Blob;
 };
 Video.prototype.setCaption = function(cap){
     this.caption=cap;
 };
 Video.prototype.save = function(blob){
-    this.video = blob;
+    this.Blob = blob;
 };

@@ -17,9 +17,7 @@ function ViewManager(VM = null) {
         this.settings = {
             videoOptions:{
                 controls: true,
-                width: 400,
-                height: 300,
-                fluid: false,
+                fluid: true,
                 plugins: {
                     record: {
                         audio: true,
@@ -91,10 +89,13 @@ ViewManager.prototype.displayUnitSaved=function(uId,vId){
                 resWhole.find(".savedResponseCap").text(v.getCaption());
                 var butts =resWhole.find(".savedResponseActions").load("html_templates/responseButtons.html",(evt)=>{
                     var deleteVid = u.deleteVideo.bind(u,vId);
+                    var changeVid = u.pickVideo.bind(u,vId);
                     butts.find(".responseDeleteButton").click(
                         deleteVid
                         );
-                    butts.find(".responseWatchButton").click();
+                    butts.find(".responseWatchButton").click(
+                        changeVid
+                    );
                 });
             })
         );
