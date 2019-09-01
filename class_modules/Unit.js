@@ -105,6 +105,7 @@ Unit.prototype.saveVideo=function(){
         vid.setId(this.vIdentifier++);
 
         this.addVideo(vid);
+        this.changeCurrent(vid);
         //this.PreviousBlob=null;
         //show the video in the recent
         //$("#unitContainer_"+this.getId()+" .mainResponse .videoSaveButton").css("visibility","hidden");
@@ -154,10 +155,16 @@ Unit.prototype.changeCurrent = function(video){
     //load the video onto the video player
     var uId = this.getId();
     var cId ="unitContainer_"+ uId; // unit container
+    var vId = video.getId();
     var blob =video.getBlob();
     var src =window.URL.createObjectURL(blob);
     $("#"+cId+" .mainResponse .videoPlayer video").attr("src",src);
     //highlight the tile
+    var rC =$("#"+cId+" .savedResponses");
+    var allR = rC.find(".row");
+    var theR = rC.find(".row.savedResponse"+vId);
+    allR.removeClass("bg-secondary bg-light").addClass("bg-light");
+    theR.removeClass("bg-light").addClass("bg-secondary");
 };
 
 Unit.prototype.pickVideo = function(vId){
