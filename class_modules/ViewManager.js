@@ -170,3 +170,8 @@ ViewManager.prototype.deleteUnit=function(uId){
     });
     $("#"+cId).remove();
 };
+ViewManager.prototype.reset=function(){
+    this.getUnits().forEach((u)=>{
+        this.deleteUnit(u.getId());
+    });
+};

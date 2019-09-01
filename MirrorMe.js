@@ -21,7 +21,12 @@ function LoadPage_B(){
 }
 function NewPage_B(){
     console.log("New Page");
-    VM= new ViewManager();
+    if(!VM){
+        VM= new ViewManager();
+    }else{
+        VM.reset();
+    }
+    
     var saveUnit = VM.saveUnit.bind(VM);
     var p =$("#modalsHere");
     var newUnit = promptNewUnit.bind(null,p,saveUnit);
