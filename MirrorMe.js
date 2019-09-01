@@ -1,7 +1,7 @@
 // import Video from './Video.js';
-// import Unit from "/class_modules/Units.js";
-// import ViewManager from "/class_modules/ViewManager.js";
-// import FileConverter from "/class_modules/FileConverter.js";
+// import Unit from "/prototype_modules/Units.js";
+// import ViewManager from "/prototype_modules/ViewManager.js";
+// import FileConverter from "/prototype_modules/FileConverter.js";
 var VM;
 var FC;
 
@@ -146,7 +146,7 @@ function setVideoPlayer(vidId,options){
         var id = vidId.split("_")[1];
         var unit = VM.getUnit(id);
         unit.savePrevTemp(player.recordedData);
-        $("#unitContainer_"+id+" .mainResponse .videoSaveButton").css("visibility","visible");
+        $("#unitContainer_"+id+" .mainResponse .videoSaveButton").css("display","inherit");
         //reveal save button?
         //keeps temorarily
         //stores immediately as a node 

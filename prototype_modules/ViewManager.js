@@ -77,7 +77,7 @@ ViewManager.prototype.displayUnitCurrent=function(uId){
     currC.find(".videoSaveButton").click(
         (evt)=>{
         Save_B(unit);
-    }).css("visibility","hidden");
+    }).css("display","none");
     currC.find(".unitTopic").text(unit.getTopic());
     currC.find(".unitDescr").text(unit.getDescription());
 };

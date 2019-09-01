@@ -4,7 +4,7 @@ The **CleverCloister** is a website for accruing my future productivity apps.
 **Key Points**  
 * I built the website layout using mostly [Bootstrap](https://getbootstrap.com/) and html fundamentals.  
 * I styled the page using a [bootstrap theme](https://bootswatch.com/).  
-* The Applications were built using [jQuery](https://api.jquery.com/), javascript and cleverness.  
+* The Applications were built using [jQuery](https://api.jquery.com/)(and other libraries like [videojs-record](https://github.com/collab-project/videojs-record)), javascript and cleverness.  
 # Below, you will find the base-pages of my website:  
 * ## The Introductory Page  
     * [Home](https://nstapler.github.io/ClevCloi/index.html)  
