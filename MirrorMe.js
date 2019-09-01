@@ -11,14 +11,28 @@ $(document).ready(function () {
             "html_templates/Buttons.html .pageButtons *", (evt)=>{
                 $("#newPb").click(NewPage_B);
                 $("#loadPb").click(LoadPage_B);
+                $("#savePb").click(SavePage_B).css("display","none");
             }
         )
     );
     //buildApp();
     });
 //modal related buttons
+function SavePage_B(){
+    if(!FC){
+        FC= new FileConverter();
+    }
+    if(!VM){
+        Vm =new ViewManager();
+    }
+    FC.saveToFile();
+}
 function LoadPage_B(){
     console.log("loading");
+    if(!FC){
+        FC= new FileConverter();
+    }
+    FC.loadFile();
 }
 function NewPage_B(){
     console.log("New Page");
@@ -36,7 +50,7 @@ function NewPage_B(){
             newUnit
         )
     );
-    
+    $("#savePb").css("display","inherit");
     p.empty();
     newUnit();
 }

@@ -1,7 +1,7 @@
 function Video(V=null) {
     if(V && typeof(V)=="object"){
         this.caption = V.caption;
-        this.Blob = V.Blob;
+        this.Blob = new Blob(V.Blob);
         this.id =V.id;
     }else{
         this.caption = "";

@@ -9,8 +9,7 @@ function Unit(U=null) {
 
 
         this.currentVideo = U.currentVideo;
-        this.PreviousBlob =U.PreviousBlob;
-        this.VideoCollection = U.VideoCollection;
+        this.PreviousBlob =new Blob(U.PreviousBlob);
         this.tags=U.tags;
 
         this.currentVideo = new Video(U.currentVideo);

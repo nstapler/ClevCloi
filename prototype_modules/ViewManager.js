@@ -10,8 +10,10 @@ function ViewManager(VM = null) {
     if (VM && typeof (VM) === "object") {
         this._uIdentifier = VM._uIdentifier;
         this.settings = VM.settings;
-        this.allUnits = VM.allUnits;
-        this.unitPlacements = VM.unitPlacements;
+        this.allUnits = VM.allUnits.map((u)=>{
+            return new Unit(u);
+        });
+        //this.unitPlacements = VM.unitPlacements;
         this.defaultSettings =VM.defaultSettings;
     } else {
         this._uIdentifier = 0;
@@ -31,7 +33,7 @@ function ViewManager(VM = null) {
         };
         this.defaultSettings =this.settings;
         this.allUnits = [];
-        this.unitPlacements = {};
+        //this.unitPlacements = {};
     }
 }
 ViewManager.prototype.createUnit = function (unitObj) {
