@@ -65,6 +65,10 @@ ViewManager.prototype.displayUnitCurrent=function(uId){
         var settings = this.getOptions();
         setVideoPlayer(vId,settings.videoOptions);
     });
+    var deleteUnit = this.deleteUnit.bind(this,uId);
+    currC.find(".deleteUnitButton").click(
+        deleteUnit
+    );
     currC.find(".videoSaveButton").click(
         (evt)=>{
         Save_B(unit);
