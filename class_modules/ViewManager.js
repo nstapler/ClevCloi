@@ -12,6 +12,7 @@ function ViewManager(VM = null) {
         this.settings = VM.settings;
         this.allUnits = VM.allUnits;
         this.unitPlacements = VM.unitPlacements;
+        this.defaultSettings =VM.defaultSettings;
     } else {
         this._uIdentifier = 0;
         this.settings = {
@@ -28,6 +29,7 @@ function ViewManager(VM = null) {
                 }
             }
         };
+        this.defaultSettings =this.settings;
         this.allUnits = [];
         this.unitPlacements = {};
     }
@@ -50,7 +52,10 @@ ViewManager.prototype.addUnit = function (unit) {
         this.allUnits.push(unit);
     }
 };
-
+ViewManager.prototype.setOptions = function(settings){
+this.settings=settings;
+//update the css of the page
+};
 ViewManager.prototype.displayUnitCurrent=function(uId){
 //check for the
     var unit =this.getUnit(uId);
@@ -91,7 +96,7 @@ ViewManager.prototype.displayUnitSaved=function(uId,vId){
                 var resWhole =$("#"+cId+" .savedResponses .savedResponse"+rId).addClass(iId+" savedResponse"+rId);
                 resWhole.find(".savedResponseVid");
                 resWhole.find(".savedResponseCap").text(v.getCaption());
-                var butts =resWhole.find(".savedResponseActions").load("html_templates/responseButtons.html",(evt)=>{
+                var butts =resWhole.find(".savedResponseActions").load("html_templates/Buttons.html .responseButtons *",(evt)=>{
                     var deleteVid = u.deleteVideo.bind(u,vId);
                     var changeVid = u.pickVideo.bind(u,vId);
                     butts.find(".responseDeleteButton").click(
@@ -160,7 +165,7 @@ ViewManager.prototype.saveUnit=function(arg){
     if(inputObj){
         this.createUnit(inputObj);
         $('#modalTemplate').modal('hide');
-        $("#newB").text("Reset Page");
+        $("#newPb").text("Reset Page");
     }
 };
 ViewManager.prototype.deleteUnit=function(uId){
@@ -170,7 +175,11 @@ ViewManager.prototype.deleteUnit=function(uId){
     });
     $("#"+cId).remove();
 };
-ViewManager.prototype.reset=function(){
+ViewManager.prototype.resetAll=function(){
+    this.setOptions(this.defaultSettings);
+    this.resetUnits();
+};
+ViewManager.prototype.resetUnits=function(){
     this.getUnits().forEach((u)=>{
         this.deleteUnit(u.getId());
     });

@@ -7,14 +7,15 @@ var FC;
 
 $(document).ready(function () {
     $("#appRowsDiv").before(
-        $("<div>").prop("class","row justify-content-center m-2 ").append(
-            $("<div>").prop("class","col-4 align-items-center").append(
-                $("<button>").prop("class","btn btn-success btn-lg m-2 p-5 align-self-center").text("New").prop("id","newB").click(NewPage_B),
-                $("<button>").prop("class","btn btn-info btn-lg m-2 p-5 align-self-center").text("Load").prop("id","loadB").click(LoadPage_B)
-                )
-        ));
+        $("<div>").prop("class", "row justify-content-center m-2").load(
+            "html_templates/Buttons.html .pageButtons *", (evt)=>{
+                $("#newPb").click(NewPage_B);
+                $("#loadPb").click(LoadPage_B);
+            }
+        )
+    );
     //buildApp();
-});
+    });
 //modal related buttons
 function LoadPage_B(){
     console.log("loading");
@@ -24,7 +25,7 @@ function NewPage_B(){
     if(!VM){
         VM= new ViewManager();
     }else{
-        VM.reset();
+        VM.resetAll();
     }
     
     var saveUnit = VM.saveUnit.bind(VM);
@@ -34,7 +35,7 @@ function NewPage_B(){
         $("<button>").prop("class","btn btn-success").text("New Unit").click(
             newUnit
         )
-        );
+    );
     
     p.empty();
     newUnit();
