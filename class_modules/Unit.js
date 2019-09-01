@@ -9,7 +9,7 @@ function Unit(U=null) {
 
 
         this.currentVideo = U.currentVideo;
-        this.TemporaryBlob =null;
+        this.PreviousBlob =null;
         this.VideoCollection = U.VideoCollection;
         this.tags=U.tags;
 
@@ -27,7 +27,7 @@ function Unit(U=null) {
         this.vIdentifier=0;
 
         this.currentVideo = null;
-        this.TemporaryBlob =null;
+        this.PreviousBlob =null;
         this.VideoCollection = [];
         this.tags=[];
     }
@@ -43,8 +43,8 @@ Unit.prototype.getResponses=function(){
     return this.VideoCollection;
 };
 
-Unit.prototype.getTemp = function(){
-    return this.TemporaryBlob;
+Unit.prototype.getPrevTemp = function(){
+    return this.PreviousBlob;
 };
 
 Unit.prototype.getTopic= function(){
@@ -99,21 +99,21 @@ Unit.prototype.saveVideo=function(){
     var inputObj = getFormInputs();
     if(inputObj){
         $('#modalTemplate').modal('hide');
-        inputObj.blob=this.getTemp();
+        inputObj.blob=this.getPrevTemp();
         var vid = new Video();
         vid.setVideo(inputObj);
         vid.setId(this.vIdentifier++);
 
         this.addVideo(vid);
-        this.TemporaryBlob=null;
+        //this.PreviousBlob=null;
         //show the video in the recent
         $("#unitContainer_"+this.getId()+" .mainResponse .videoSaveButton").css("visibility","hidden");
     }
     
 };
 
-Unit.prototype.saveTemp=function(blob){
-    this.TemporaryBlob=blob;
+Unit.prototype.savePrevTemp=function(blob){
+    this.PreviousBlob=blob;
     this.update();
 };
 
@@ -160,8 +160,8 @@ Unit.prototype.pickVideo = function(index){
         this.changeCurrent(this.VideoCollection.splice(index,1));
     }
 };
-Unit.prototype.deleteVideo=function(uId,vId){
-    var cId ="unitContainer_"+ uId; // unit container
+Unit.prototype.deleteVideo=function(vId){
+    var cId ="unitContainer_"+ this.getId(); // unit container
     this.VideoCollection=this.getResponses().filter((r)=>{
         return r.getId()!=vId;
     });

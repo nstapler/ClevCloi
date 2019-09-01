@@ -59,18 +59,20 @@ ViewManager.prototype.displayUnitCurrent=function(uId){
     var cId ="unitContainer_"+ uId; // unit container
     var iId ="unit_"+uId; // response item
     var vId ="currentVideo_"+uId;
-    $("#"+cId+" .mainResponse .videoPlayer").load("html_templates/video_template.html",(evt)=>{
-        $("#"+cId+" .mainResponse .videoPlayer video").addClass(iId).prop("id",vId);
+    var currC = $("#"+cId+" .mainResponse");
+    var vidC =currC.find(".videoPlayer").load(
+        "html_templates/video_template.html",(evt)=>{
+        vidC.find("video").addClass(iId).prop("id",vId);
         // set to current vid if has one
         var settings = this.getOptions();
         setVideoPlayer(vId,settings.videoOptions);
-
     });
-    $("#"+cId+" .mainResponse .videoSaveButton").click((evt)=>{
+    currC.find(".videoSaveButton").click(
+        (evt)=>{
         Save_B(unit);
     }).css("visibility","hidden");
-    $("#"+cId+" .mainResponse .unitTopic").text(unit.getTopic());
-    $("#"+cId+" .mainResponse .unitDescr").text(unit.getDescription());
+    currC.find(".unitTopic").text(unit.getTopic());
+    currC.find(".unitDescr").text(unit.getDescription());
 };
 
 ViewManager.prototype.displayUnitSaved=function(uId,vId){
@@ -78,16 +80,21 @@ ViewManager.prototype.displayUnitSaved=function(uId,vId){
     var cId ="unitContainer_"+ uId; // unit container
     var resC = $("#"+cId+" .savedResponses");
     var iId ="unit_"+uId; // response item
-    var r = this.getUnit(uId).getVideo(vId);
+    var u = this.getUnit(uId);
+    var v = u.getVideo(vId);
     resC.prepend(
         $("<div>").prop("class","row bg-light m-2").addClass(iId+" savedResponse"+rId).load(
             "html_templates/savedVideo_template.html",
             (evt)=>{
                 var resWhole =$("#"+cId+" .savedResponses .savedResponse"+rId).addClass(iId+" savedResponse"+rId);
                 resWhole.find(".savedResponseVid");
-                resWhole.find(".savedResponseCap").text(r.getCaption());
-                resWhole.find(".savedResponseActions").load("html_templates/responseButtons.html",(evt)=>{
-                    //click on the buttons
+                resWhole.find(".savedResponseCap").text(v.getCaption());
+                var butts =resWhole.find(".savedResponseActions").load("html_templates/responseButtons.html",(evt)=>{
+                    var deleteVid = u.deleteVideo.bind(u,vId);
+                    butts.find(".responseDeleteButton").click(
+                        deleteVid
+                        );
+                    butts.find(".responseWatchButton").click();
                 });
             })
         );
@@ -126,9 +133,9 @@ ViewManager.prototype.getOptions=function(){
 return this.settings;
 };
 
-ViewManager.prototype.getUnit=function(uIdentifier){
+ViewManager.prototype.getUnit=function(uId){
     return (this.getUnits().find((u)=>{
-        return u.getId()==uIdentifier;
+        return u.getId()==uId;
     }));
 };
 

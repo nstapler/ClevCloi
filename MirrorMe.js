@@ -42,23 +42,26 @@ function Save_B(unit){
     var saveVideo = unit.saveVideo.bind(unit);
     $('#modalTemplate .modal-header').empty().load("html_templates/New-Video-Form.html #newVideoHeader *",(evt)=>{
         $('#modalTemplate .modal-body').empty().load("html_templates/New-Video-Form.html #newVideoBody",(evt)=>{
-            var videoInfo = unit.getTemp();
-            var detArea = $("#newVideoBody #videoDetails");
-            Object.keys(videoInfo).forEach((f)=>{
-                detArea.append(
-                    $("<div>").prop("class","row border border-dark").append(
-                        $("<div>").prop("class","col-4 border-right border-dark").append(
-                            $("<p>").prop("class",".text-break").text(f)
-                                
-                        ),
-                        $("<div>").prop("class","col-8").append(
-                            $("<p>").text(videoInfo[f])
-                        )
-                    ) 
-                );
-            });
-            $('#modalTemplate #modalSave').text("Save Video").off("click").click(saveVideo);
-            $('#modalTemplate').modal('show');
+            var videoInfo = unit.getPrevTemp();
+            if(videoInfo){
+                var detArea = $("#newVideoBody #videoDetails");
+                Object.keys(videoInfo).forEach((f)=>{
+                    detArea.append(
+                        $("<div>").prop("class","row border border-dark").append(
+                            $("<div>").prop("class","col-4 border-right border-dark").append(
+                                $("<p>").prop("class","text-break").text(f)
+                                    
+                            ),
+                            $("<div>").prop("class","col-8").append(
+                                $("<p>").text(videoInfo[f])
+                            )
+                        ) 
+                    );
+                });
+                $('#modalTemplate #modalSave').text("Save Video").off("click").click(saveVideo);
+                $('#modalTemplate').modal('show');
+            }
+            
         });
     });
 }
@@ -122,7 +125,7 @@ function setVideoPlayer(vidId,options){
         var vidId = playerInfo.id;
         var id = vidId.split("_")[1];
         var unit = VM.getUnit(id);
-        unit.saveTemp(player.recordedData);
+        unit.savePrevTemp(player.recordedData);
         $("#unitContainer_"+id+" .mainResponse .videoSaveButton").css("visibility","visible");
         //reveal save button?
         //keeps temorarily
