@@ -6,7 +6,7 @@ var VM;
 var FC;
 
 $(document).ready(function () {
-    $("#appRowsDiv").append(
+    $("#appRowsDiv").before(
         $("<div>").prop("class","row justify-content-center m-2 ").append(
             $("<div>").prop("class","col-4 align-items-center").append(
                 $("<button>").prop("class","btn btn-success btn-lg m-2 p-5 align-self-center").text("New").prop("id","newB").click(NewPage_B),
@@ -15,26 +15,40 @@ $(document).ready(function () {
         ));
     //buildApp();
 });
+//modal related buttons
 function LoadPage_B(){
     console.log("loading");
 }
 function NewPage_B(){
     console.log("New Page");
     VM= new ViewManager();
-    var p =$("#modalsHere");
-    p.empty();
     var saveUnit = VM.saveUnit.bind(VM);
+    var p =$("#modalsHere");
+    var newUnit = promptNewUnit.bind(null,p,saveUnit);
+    $("#appRowsDiv").empty().append(
+        $("<button>").prop("class","btn btn-success").text("New Unit").click(
+            newUnit
+        )
+        );
+    
+    p.empty();
+    newUnit();
+}
+function NewUnit_B(){
+    var saveUnit = VM.saveUnit.bind(VM);
+    var p =$("#modalsHere");
+    promptNewUnit(p,saveUnit);
+}
+function promptNewUnit(pageNode,saveFunc){
+    var p = pageNode;
     p.load("html_templates/modal-templates.html",(evt)=>{
         $('#modalTemplate .modal-header').empty().load("html_templates/New-Unit-Form.html #newUnitHeader *",(evt)=>{
             $('#modalTemplate .modal-body').empty().load("html_templates/New-Unit-Form.html #newUnitBody",(evt)=>{
-                $('#modalTemplate #modalSave').text("Create Unit").off("click").click(saveUnit);
+                $('#modalTemplate #modalSave').text("Create Unit").off("click").click(saveFunc);
                 $('#modalTemplate').modal('show');
             });
         });
-        
-        
-    });
-    
+    });  
 }
 function Save_B(unit){
     // open a modal with the data and with

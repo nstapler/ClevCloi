@@ -160,7 +160,7 @@ ViewManager.prototype.saveUnit=function(arg){
     if(inputObj){
         this.createUnit(inputObj);
         $('#modalTemplate').modal('hide');
-        $("#newB").text("Reset");
+        $("#newB").text("Reset Page");
     }
 };
 ViewManager.prototype.deleteUnit=function(uId){
