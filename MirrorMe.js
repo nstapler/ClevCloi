@@ -39,7 +39,7 @@ function NewPage_B(){
 function Save_B(unit){
     // open a modal with the data and with
     //caption text input
-    var saveVideo = unit.saveNew.bind(unit);
+    var saveVideo = unit.saveVideo.bind(unit);
     $('#modalTemplate .modal-header').empty().load("html_templates/New-Video-Form.html #newVideoHeader *",(evt)=>{
         $('#modalTemplate .modal-body').empty().load("html_templates/New-Video-Form.html #newVideoBody",(evt)=>{
             var videoInfo = unit.getTemp();

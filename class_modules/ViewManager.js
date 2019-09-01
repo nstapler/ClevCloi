@@ -34,38 +34,25 @@ function ViewManager(VM = null) {
         this.unitPlacements = {};
     }
 }
-ViewManager.prototype.addUnit = function (unitObj) {
+ViewManager.prototype.createUnit = function (unitObj) {
     if(typeof(unitObj)=="object"){
-        let unit = new Unit();
-        var fields = Object.keys(unitObj);
-        fields.forEach((f) => {
-            switch (f.toLowerCase()) {
-                case "topic":
-                    unit.setTopic(unitObj[f]);
-                    break;
-                case "description":
-                    unit.setDescription(unitObj[f]);
-                    break;
-                case "tags":
-                    unit.setTags(unitObj[f]);
-                    break;
-                default:
-                    console.log("Unexpected field found: " + f);
-                    break;
-            }
-        });
+        var unit = new Unit();
+        unit.setUnit(unitObj);
         unit.setId(this._uIdentifier++);
-        this.changeUnits(unit);
+
+        this.addUnit(unit);
+        this.displayUnit(unit);
     }else{
         alert("please Submit valid unit object");
     }
     
 };
-ViewManager.prototype.changeUnits = function (unit) {
+ViewManager.prototype.addUnit = function (unit) {
     if (typeof (unit) === "object") {
         this.allUnits.push(unit);
     }
 };
+
 ViewManager.prototype.displayUnitCurrent=function(uId){
 //check for the
     var unit =this.getUnit(uId);
@@ -85,23 +72,27 @@ ViewManager.prototype.displayUnitCurrent=function(uId){
     $("#"+cId+" .mainResponse .unitTopic").text(unit.getTopic());
     $("#"+cId+" .mainResponse .unitDescr").text(unit.getDescription());
 };
+
 ViewManager.prototype.displayUnitSaved=function(uId,vId){
     var rId=vId;
     var cId ="unitContainer_"+ uId; // unit container
     var resC = $("#"+cId+" .savedResponses");
-    resC.append(
+    var iId ="unit_"+uId; // response item
+    var r = this.getUnit(uId).getVideo(vId);
+    resC.prepend(
         $("<div>").prop("class","row bg-light m-2").addClass(iId+" savedResponse"+rId).load(
-            "/html_templates/savedVideo_template.html",
+            "html_templates/savedVideo_template.html",
             (evt)=>{
                 var resWhole =$("#"+cId+" .savedResponses .savedResponse"+rId).addClass(iId+" savedResponse"+rId);
-                resWhole.find("#savedResponseVid");
-                resWhole.find("#savedResponseCap").text(r.getCaption());
-                resWhole.find("#savedResponseActions").load("/html_templates/responseButtons.html",(evt)=>{
+                resWhole.find(".savedResponseVid");
+                resWhole.find(".savedResponseCap").text(r.getCaption());
+                resWhole.find(".savedResponseActions").load("html_templates/responseButtons.html",(evt)=>{
                     //click on the buttons
                 });
             })
         );
 };
+
 ViewManager.prototype.displayUnit = function (unit) {
     //create holding div
     //create video
@@ -130,29 +121,40 @@ ViewManager.prototype.displayUnit = function (unit) {
 
     }  
 };
+
 ViewManager.prototype.getOptions=function(){
 return this.settings;
 };
+
 ViewManager.prototype.getUnit=function(uIdentifier){
     return (this.getUnits().find((u)=>{
         return u.getId()==uIdentifier;
     }));
 };
+
 ViewManager.prototype.getUnits=function(){
     return this.allUnits;
 };
+
 ViewManager.prototype.showAllUnits=function(){
     var units = this.getUnits();
     units.forEach((u)=>{
         this.displayUnit(u);
     });
 };
+
 ViewManager.prototype.saveUnit=function(arg){
     var inputObj = getFormInputs();
     if(inputObj){
-        this.addUnit(inputObj);
+        this.createUnit(inputObj);
         $('#modalTemplate').modal('hide');
         $("#newB").text("Reset");
-        this.showAllUnits();
     }
+};
+ViewManager.prototype.deleteUnit=function(uId){
+    var cId ="unitContainer_"+ uId; // unit container
+    this.allUnits=this.getUnits().filter((u)=>{
+        return u.getId()!=uId;
+    });
+    $("#"+cId).remove();
 };

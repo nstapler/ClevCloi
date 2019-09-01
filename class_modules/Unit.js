@@ -33,10 +33,15 @@ function Unit(U=null) {
     }
     
 }
+Unit.prototype.getVideo=function(vId){
+return this.getResponses().find((r)=>{
+    return r.getId()==vId;
+});
+};
 
 Unit.prototype.getResponses=function(){
     return this.VideoCollection;
-}
+};
 
 Unit.prototype.getTemp = function(){
     return this.TemporaryBlob;
@@ -45,18 +50,23 @@ Unit.prototype.getTemp = function(){
 Unit.prototype.getTopic= function(){
     return this.Topic;
 };
+
 Unit.prototype.getDescription= function(){
     return this.Description;
 };
+
 Unit.prototype.getTags= function(){
     return this.Tags;
 };
+
 Unit.prototype.updated= function(){
     return this.lastUpdated;
 };
+
 Unit.prototype.created= function(){
     return this.dateCreated;
 };
+
 Unit.prototype.getId= function(){
     return this.id;
 };
@@ -64,9 +74,28 @@ Unit.prototype.getCurrent= function(){
     return this.currentVideo;
 };
 
+Unit.prototype.setUnit=function(unitObj){
+        var fields = Object.keys(unitObj);
+        fields.forEach((f) => {
+            switch (f.toLowerCase()) {
+                case "topic":
+                    this.setTopic(unitObj[f]);
+                    break;
+                case "description":
+                    this.setDescription(unitObj[f]);
+                    break;
+                case "tags":
+                    this.setTags(unitObj[f]);
+                    break;
+                default:
+                    console.log("Unexpected field found: " + f);
+                    break;
+            }
+        });
 
+};
 
-Unit.prototype.saveNew=function(){
+Unit.prototype.saveVideo=function(){
     var inputObj = getFormInputs();
     if(inputObj){
         $('#modalTemplate').modal('hide');
@@ -115,6 +144,7 @@ Unit.prototype.setId= function(id){
 Unit.prototype.addVideo = function(video){
     this.VideoCollection.push(video);
     this.update();
+    VM.displayUnitSaved(this.getId(),video.getId());
 };
 
 Unit.prototype.changeCurrent = function(video){
@@ -129,4 +159,11 @@ Unit.prototype.pickVideo = function(index){
     if(index<=this.VideoCollection.length-1 && index >= 0  ){
         this.changeCurrent(this.VideoCollection.splice(index,1));
     }
+};
+Unit.prototype.deleteVideo=function(uId,vId){
+    var cId ="unitContainer_"+ uId; // unit container
+    this.VideoCollection=this.getResponses().filter((r)=>{
+        return r.getId()!=vId;
+    });
+    $("#"+cId+" .savedResponses .savedResponse"+vId).remove();
 };
