@@ -7,7 +7,7 @@ The **CleverCloister** is a website for accruing my future productivity apps.
 * The Applications were built using [jQuery](https://api.jquery.com/), javascript and cleverness.  
 # Below, you will find the base-pages of my website:  
 * ## The Introductory Page  
-    * [Home](https://nstapler.github.io/ClevCloi/home.html)  
+    * [Home](https://nstapler.github.io/ClevCloi/index.html)  
 * ## Application Showcase  
     * [Apps](https://nstapler.github.io/ClevCloi/apps.html)  
 * ## Contact Me 
