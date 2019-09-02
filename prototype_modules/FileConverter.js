@@ -30,12 +30,25 @@ FileConverter.prototype.loadFile=function(){
 };
 FileConverter.prototype.readFile=function(){
     var fObject = JSON.parse(this.FileContent);
-    console.log(object);
-    // VM = new ViewManager(fObject);
-    // VM.showAllUnits();
+    console.log(fObject);
+    if(VM){
+        VM.resetUnits();
+    }
+    if(fObject && typeof(fObject)=="object"){
+        //VM = new ViewManager(fObject);
+        //VM.Initialize();
+    }
     //initialize
 };
 FileConverter.prototype.saveToFile=function(){
     var VMstr = JSON.stringify(VM);
-    
+    var a = document.createElement("a");
+    var file = new Blob([VMstr],{type: 'text/plain'});
+    a.href = URL.createObjectURL(file);
+    var d = new Date();
+    a.download=("MirrorMeSave_"+
+    d.getMonth()+"-"+
+    d.getDate()+"-"+
+    d.getFullYear()+".text");
+    a.click();
 };

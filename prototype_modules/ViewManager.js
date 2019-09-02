@@ -186,3 +186,15 @@ ViewManager.prototype.resetUnits=function(){
         this.deleteUnit(u.getId());
     });
 };
+ViewManager.prototype.Initialize=function(){
+    this.showAllUnits();
+    var saveUnit = VM.saveUnit.bind(VM);
+    var p =$("#modalsHere");
+    var newUnit = promptNewUnit.bind(null,p,saveUnit);
+    $("#appRowsDiv").empty().append(
+        $("<button>").prop("class","btn btn-success").text("New Unit").click(
+            newUnit
+        )
+    );
+    $("#savePb").css("display","inherit");
+};
