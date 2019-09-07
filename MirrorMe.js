@@ -4,7 +4,7 @@
 // import FileConverter from "/prototype_modules/FileConverter.js";
 var VM;
 var FC;
-
+var playerArr=[];
 $(document).ready(function () {
     $("#appRowsDiv").before(
         $("<div>").prop("class", "row justify-content-center m-2").load(
@@ -25,7 +25,7 @@ function SavePage_B(){
     if(!VM){
         Vm =new ViewManager();
     }
-    FC.saveToFile();
+    VM.PrepSave();
 }
 function LoadPage_B(){
     console.log("loading");
@@ -138,6 +138,7 @@ function setVideoPlayer(vidId,options){
             ' and recordrtc ' + RecordRTC.version;
         videojs.log(msg);
     });
+    playerArr.push({vid:player,id:vidId});
     // error handling
     player.on('deviceError', function () {
         console.log('device error:', player.deviceErrorCode);
@@ -169,6 +170,28 @@ function setVideoPlayer(vidId,options){
 
 
     });
+}
+//**dataURL to blob**
+function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
+}
+
+//**blob to dataURL**
+function blobToDataURL(blob, callback) {
+    return new Promise((resolve,reject)=>{
+        var a = new FileReader();
+        a.onload = function(e) {resolve(
+            callback(e.target.result)
+            );
+        };
+        a.readAsDataURL(blob);
+    });
+    
 }
 //download all the htmls
 //write as files

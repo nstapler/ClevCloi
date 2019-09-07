@@ -6,19 +6,16 @@ function Unit(U=null) {
         this.dateCreated=U.dateCreated;
         this.lastUpdated=U.lastUpdated;
         this.vIdentifier=U.vIdentifier;
-
-
-        this.currentVideo = U.currentVideo;
-        this.PreviousBlob =new Blob(U.PreviousBlob);
+        this.currentVideo =  new Video(U.currentVideo);
         this.tags=U.tags;
 
-        this.currentVideo = new Video(U.currentVideo);
+        //this.currentVideo = new Video(U.currentVideo);
         this.VideoCollection = U.VideoCollection.map((v)=>{
             return new Video(v);
         });
     }else{
         var d = new Date();
-        this.id = -1;
+        this.id = 0;
         this.Topic ="";
         this.Description ="";
         this.dateCreated=d.toString();
@@ -174,5 +171,6 @@ Unit.prototype.deleteVideo=function(vId){
     this.VideoCollection=this.getResponses().filter((r)=>{
         return r.getId()!=vId;
     });
+    
     $("#"+cId+" .savedResponses .savedResponse"+vId).remove();
 };

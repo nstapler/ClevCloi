@@ -6,15 +6,15 @@
 //-- connect html to models
 
 //Control Extra Looks
-function ViewManager(VM = null) {
-    if (VM && typeof (VM) === "object") {
-        this._uIdentifier = VM._uIdentifier;
-        this.settings = VM.settings;
-        this.allUnits = VM.allUnits.map((u)=>{
+function ViewManager(vmO = null) {
+    if (vmO && typeof (vmO) === "object") {
+        this._uIdentifier = vmO._uIdentifier;
+        this.settings = vmO.settings;
+        this.allUnits = vmO.allUnits.map((u)=>{
             return new Unit(u);
         });
         //this.unitPlacements = VM.unitPlacements;
-        this.defaultSettings =VM.defaultSettings;
+        this.defaultSettings =vmO.defaultSettings;
     } else {
         this._uIdentifier = 0;
         this.settings = {
@@ -175,6 +175,13 @@ ViewManager.prototype.deleteUnit=function(uId){
     this.allUnits=this.getUnits().filter((u)=>{
         return u.getId()!=uId;
     });
+    var pI = playerArr.findIndex((p)=>{
+        return p.id==("currentVideo_"+uId);
+    });
+    if(pI!=-1){
+        var p =playerArr.splice(pI,1);
+        p.vid.record().destroy();
+    }
     $("#"+cId).remove();
 };
 ViewManager.prototype.resetAll=function(){
@@ -187,7 +194,6 @@ ViewManager.prototype.resetUnits=function(){
     });
 };
 ViewManager.prototype.Initialize=function(){
-    this.showAllUnits();
     var saveUnit = VM.saveUnit.bind(VM);
     var p =$("#modalsHere");
     var newUnit = promptNewUnit.bind(null,p,saveUnit);
@@ -197,4 +203,48 @@ ViewManager.prototype.Initialize=function(){
         )
     );
     $("#savePb").css("display","inherit");
+    this.showAllUnits();
+    
+    
+};
+ViewManager.prototype.PrepSave=function(){
+    //promis.all
+    var allPromises=[];
+    var toReplace =[];
+    //var promise = Promise.resolve();
+    this.getUnits().forEach((u)=>{
+        if(u.currentVideo.getBlob()){
+           allPromises.push(blobToDataURL(u.currentVideo.getBlob(),(dataUrl)=>{
+                if(!dataUrl){
+                    return 'e';
+                }   
+                u.currentVideo.dataUrl=dataUrl;
+               return 's';
+           }));
+        }
+        u.getResponses().forEach((v)=>{
+            if(v.getBlob()){
+                allPromises.push(blobToDataURL(v.getBlob(),(dataUrl)=>{
+                    if(!dataUrl){
+                        return 'e';
+                    }
+                    v.dataUrl=dataUrl;
+                    return 's';
+                }));
+            }
+        });
+
+    });
+    // promise.then(()=>{
+    //     console.log("all the videos were processed!");
+    // });
+    Promise.all(allPromises).then(res=>{
+        var Error =res.find((res)=>{return res=='e';});
+
+if(Error){
+    console.log("one or more of the blobs were not converted to a dataurl. Please try saving again");
+}else{
+    FC.saveToFile();
+}
+    });
 };

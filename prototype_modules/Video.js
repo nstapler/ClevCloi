@@ -1,7 +1,7 @@
 function Video(V=null) {
     if(V && typeof(V)=="object"){
         this.caption = V.caption;
-        this.Blob = new Blob(V.Blob);
+        this.Blob = dataURLtoBlob(V.dataUrl);
         this.id =V.id;
     }else{
         this.caption = "";
@@ -19,7 +19,7 @@ Video.prototype.setVideo=function(inputObj){
                     this.setCaption(inputObj[f]);
                 break;
                     case "blob":
-                    this.save(inputObj[f]);
+                    this.setBlob(inputObj[f]);
                 break;
                 default:
                     console.log("Unexpected field found: " + f);
@@ -45,6 +45,6 @@ Video.prototype.getBlob = function(){
 Video.prototype.setCaption = function(cap){
     this.caption=cap;
 };
-Video.prototype.save = function(blob){
+Video.prototype.setBlob = function(blob){
     this.Blob = blob;
 };
