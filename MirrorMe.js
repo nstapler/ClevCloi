@@ -137,6 +137,7 @@ function setVideoPlayer(vidId,options){
             ' with videojs-record ' + videojs.getPluginVersion('record') +
             ' and recordrtc ' + RecordRTC.version;
         videojs.log(msg);
+        
     });
     playerArr.push({vid:player,id:vidId});
     // error handling
@@ -147,9 +148,16 @@ function setVideoPlayer(vidId,options){
         console.error(error);
     });
     // user clicked the record button and started recording
-    player.on('startRecord', function () {
-        console.log('started recording!');
+    player.on('enterPIP', function () {
+        console.log('enterPIP');
 
+    });
+    player.on('leavePIP', function () {
+        console.log('leavePIP!');
+
+    });
+    player.on('startRecord', function() {
+        console.log('started recording!');
     });
     // user completed recording and stream is available
     player.on('finishRecord', function () {

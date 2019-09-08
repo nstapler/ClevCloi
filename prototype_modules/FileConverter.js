@@ -20,7 +20,7 @@ FileConverter.prototype.loadFile=function(){
        // here we tell the reader what to do when it's done reading...
        reader.onload = readerEvent => {
           var content = readerEvent.target.result; // this is the content!
-          console.log( content );
+          //console.log( content );
           this.FileContent = content;
           this.readFile();
        };

@@ -20,12 +20,12 @@ function ViewManager(vmO = null) {
         this.settings = {
             videoOptions:{
                 controls: true,
-                fluid: true,
+                //fluid: true,
                 plugins: {
                     record: {
                         audio: true,
                         video: true,
-                        maxLength: 30,
+                        maxLength: 300,
                         debug: true
                     }
                 }
@@ -95,7 +95,7 @@ ViewManager.prototype.displayUnitSaved=function(uId,vId){
         $("<div>").prop("class","row bg-light m-2").addClass(iId+" savedResponse"+rId).load(
             "html_templates/savedVideo_template.html",
             (evt)=>{
-                var resWhole =$("#"+cId+" .savedResponses .savedResponse"+rId).addClass(iId+" savedResponse"+rId);
+                var resWhole =$("#"+cId+" .savedResponses .savedResponse"+rId).addClass(iId+" savedResponse"+rId+" rounded-lg border border-danger");
                 resWhole.find(".savedResponseVid");
                 resWhole.find(".savedResponseCap").text(v.getCaption());
                 var butts =resWhole.find(".savedResponseActions").load("html_templates/Buttons.html .responseButtons *",(evt)=>{
@@ -175,12 +175,14 @@ ViewManager.prototype.deleteUnit=function(uId){
     this.allUnits=this.getUnits().filter((u)=>{
         return u.getId()!=uId;
     });
-    var pI = playerArr.findIndex((p)=>{
-        return p.id==("currentVideo_"+uId);
+    var pI = playerArr.findIndex((pO)=>{
+        return pO.id==("currentVideo_"+uId);
     });
     if(pI!=-1){
         var p =playerArr.splice(pI,1);
-        p.vid.record().destroy();
+        if(p && p.length>0){
+            p[0].vid.record().destroy();
+        }
     }
     $("#"+cId).remove();
 };

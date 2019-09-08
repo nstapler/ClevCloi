@@ -150,17 +150,40 @@ Unit.prototype.changeCurrent = function(video){
     this.update();
     //load the video onto the video player
     var uId = this.getId();
+    //var blob =video.getBlob();
+    // var cId ="unitContainer_"+ uId; // unit container
+    // var vId = video.getId();
+    // var src =window.URL.createObjectURL(blob);
+    
     var cId ="unitContainer_"+ uId; // unit container
     var vId = video.getId();
     var blob =video.getBlob();
     var src =window.URL.createObjectURL(blob);
     $("#"+cId+" .mainResponse .videoPlayer video").attr("src",src);
+    var pO = playerArr.find((pO)=>{
+        return pO.id==("currentVideo_"+uId);
+    });
+    if(pO){
+        //pO.vid.load(src);
+        var p = pO.vid;
+        // if(!p.hasStarted_){
+        //     p.record().getDevice();
+        // }
+        // if(p.record().isRecording()){
+        //     p.record().stop();
+        // }
+        //p.src(src);
+        
+        //p.play();
+    }
     //highlight the tile
     var rC =$("#"+cId+" .savedResponses");
     var allR = rC.find(".row");
     var theR = rC.find(".row.savedResponse"+vId);
     allR.removeClass("bg-secondary bg-light").addClass("bg-light");
+    allR.find(".savedVideoStatus").text("Saved Video Details");
     theR.removeClass("bg-light").addClass("bg-secondary");
+    theR.find(".savedVideoStatus").text("Current/Saved Video Details");
 };
 
 Unit.prototype.pickVideo = function(vId){
