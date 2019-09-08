@@ -29,16 +29,7 @@ FileConverter.prototype.loadFile=function(){
     fileSelector.click();
 };
 FileConverter.prototype.readFile=function(){
-    var fObject = JSON.parse(this.FileContent);
-    console.log(fObject);
-    if(VM){
-        VM.resetUnits();
-    }
-    if(fObject && typeof(fObject)=="object"){
-        VM = new ViewManager(fObject);
-        VM.Initialize();
-    }
-    //initialize
+    this.loadContents(this.FileContent);
 };
 FileConverter.prototype.saveToFile=function(){
     //VM.PrepSave();
@@ -47,10 +38,33 @@ FileConverter.prototype.saveToFile=function(){
     var file = new Blob([VMstr],{type: 'text/plain'});
     a.href = URL.createObjectURL(file);
     var d = new Date();
+    var m = d.getMonth()+1;
     a.download=("MirrorMeSave_"+
-    (d.getMonth()+1)+"-"+
+    m+"-"+
     d.getDate()+"-"+
     d.getFullYear()+".text");
     a.click();
+};
+FileConverter.prototype.saveToLocal=function(){
+    var VMstr = JSON.stringify(VM);
+    localStorage.setItem('MirrorMe_TempSave', VMstr);
+};
+FileConverter.prototype.loadLocal=function(){
+    var tempSave = localStorage.getItem('MirrorMe_TempSave');
+    if(tempSave){
+        this.loadContents(tempSave);
+    }
+    
+};
+FileConverter.prototype.loadContents=function(contents){
+    var fObject = JSON.parse(contents);
+    console.log(fObject);
+    if(VM){
+        VM.resetUnits();
+    }
+    if(fObject && typeof(fObject)=="object"){
+        VM = new ViewManager(fObject);
+        VM.Initialize();
+    }
 };
 

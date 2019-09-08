@@ -142,6 +142,7 @@ Unit.prototype.addVideo = function(video){
     this.VideoCollection.push(video);
     this.update();
     VM.displayUnitSaved(this.getId(),video.getId());
+    VM.PrepSave(FC.saveToLocal);
 };
 
 Unit.prototype.changeCurrent = function(video){
@@ -196,4 +197,5 @@ Unit.prototype.deleteVideo=function(vId){
     });
     
     $("#"+cId+" .savedResponses .savedResponse"+vId).remove();
+    VM.PrepSave(FC.saveToLocal);
 };

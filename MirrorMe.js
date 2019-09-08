@@ -16,6 +16,10 @@ $(document).ready(function () {
         )
     );
     //buildApp();
+    if(!FC){
+        FC= new FileConverter();
+    }
+    FC.loadLocal();
     });
 //modal related buttons
 function SavePage_B(){
@@ -25,7 +29,7 @@ function SavePage_B(){
     if(!VM){
         Vm =new ViewManager();
     }
-    VM.PrepSave();
+    VM.PrepSave(FC.saveToFile);
 }
 function LoadPage_B(){
     console.log("loading");
@@ -74,30 +78,34 @@ function Save_B(unit){
     // open a modal with the data and with
     //caption text input
     var saveVideo = unit.saveVideo.bind(unit);
-    $('#modalTemplate .modal-header').empty().load("html_templates/New-Video-Form.html #newVideoHeader *",(evt)=>{
-        $('#modalTemplate .modal-body').empty().load("html_templates/New-Video-Form.html #newVideoBody",(evt)=>{
-            var videoInfo = unit.getPrevTemp();
-            if(videoInfo){
-                var detArea = $("#newVideoBody #videoDetails");
-                Object.keys(videoInfo).forEach((f)=>{
-                    detArea.append(
-                        $("<div>").prop("class","row border border-dark").append(
-                            $("<div>").prop("class","col-4 border-right border-dark").append(
-                                $("<p>").prop("class","text-break").text(f)
-                                    
-                            ),
-                            $("<div>").prop("class","col-8").append(
-                                $("<p>").text(videoInfo[f])
-                            )
-                        ) 
-                    );
-                });
-                $('#modalTemplate #modalSave').text("Save Video").off("click").click(saveVideo);
-                $('#modalTemplate').modal('show');
-            }
-            
+    var p = $("#modalsHere");
+    p.load("html_templates/modal-templates.html",(evt)=>{
+        $('#modalTemplate .modal-header').empty().load("html_templates/New-Video-Form.html #newVideoHeader *",(evt)=>{
+            $('#modalTemplate .modal-body').empty().load("html_templates/New-Video-Form.html #newVideoBody",(evt)=>{
+                var videoInfo = unit.getPrevTemp();
+                if(videoInfo){
+                    var detArea = $("#newVideoBody #videoDetails");
+                    Object.keys(videoInfo).forEach((f)=>{
+                        detArea.append(
+                            $("<div>").prop("class","row border border-dark").append(
+                                $("<div>").prop("class","col-4 border-right border-dark").append(
+                                    $("<p>").prop("class","text-break").text(f)
+                                        
+                                ),
+                                $("<div>").prop("class","col-8").append(
+                                    $("<p>").text(videoInfo[f])
+                                )
+                            ) 
+                        );
+                    });
+                    $('#modalTemplate #modalSave').text("Save Video").off("click").click(saveVideo);
+                    $('#modalTemplate').modal('show');
+                }
+                
+            });
         });
     });
+    
 }
 function getFormInputs(){
     var form =$("#modalTemplate form");

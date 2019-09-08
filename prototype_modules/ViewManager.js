@@ -168,6 +168,7 @@ ViewManager.prototype.saveUnit=function(arg){
         this.createUnit(inputObj);
         $('#modalTemplate').modal('hide');
         $("#newPb").text("Reset Page");
+        VM.PrepSave(FC.saveToLocal);
     }
 };
 ViewManager.prototype.deleteUnit=function(uId){
@@ -185,6 +186,7 @@ ViewManager.prototype.deleteUnit=function(uId){
         }
     }
     $("#"+cId).remove();
+    VM.PrepSave(FC.saveToLocal);
 };
 ViewManager.prototype.resetAll=function(){
     this.setOptions(this.defaultSettings);
@@ -209,13 +211,13 @@ ViewManager.prototype.Initialize=function(){
     
     
 };
-ViewManager.prototype.PrepSave=function(){
+ViewManager.prototype.PrepSave=function(callBack){
     //promis.all
     var allPromises=[];
     var toReplace =[];
     //var promise = Promise.resolve();
     this.getUnits().forEach((u)=>{
-        if(u.currentVideo.getBlob()){
+        if(u.currentVideo && u.currentVideo.getBlob()){
            allPromises.push(blobToDataURL(u.currentVideo.getBlob(),(dataUrl)=>{
                 if(!dataUrl){
                     return 'e';
@@ -244,9 +246,9 @@ ViewManager.prototype.PrepSave=function(){
         var Error =res.find((res)=>{return res=='e';});
 
 if(Error){
-    console.log("one or more of the blobs were not converted to a dataurl. Please try saving again");
+    alert("one or more of the blobs were not converted to a dataurl. Please try saving again")
 }else{
-    FC.saveToFile();
+    callBack();
 }
     });
 };
