@@ -167,7 +167,7 @@ ViewManager.prototype.saveUnit=function(arg){
     if(inputObj){
         this.createUnit(inputObj);
         $('#modalTemplate').modal('hide');
-        $("#newPb").text("Reset Page");
+        $("#newPb").text("Reset Page").removeClass("btn-success btn-danger").addClass("btn-danger");
         VM.PrepSave(FC.saveToLocal);
     }
 };
@@ -206,10 +206,9 @@ ViewManager.prototype.Initialize=function(){
             newUnit
         )
     );
+    
     $("#savePb").css("display","inherit");
     this.showAllUnits();
-    
-    
 };
 ViewManager.prototype.PrepSave=function(callBack){
     //promis.all
@@ -246,7 +245,7 @@ ViewManager.prototype.PrepSave=function(callBack){
         var Error =res.find((res)=>{return res=='e';});
 
 if(Error){
-    alert("one or more of the blobs were not converted to a dataurl. Please try saving again")
+    alert("one or more of the blobs were not converted to a dataurl. Please try saving again");
 }else{
     callBack();
 }

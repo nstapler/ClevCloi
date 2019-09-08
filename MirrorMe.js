@@ -12,6 +12,10 @@ $(document).ready(function () {
                 $("#newPb").click(NewPage_B);
                 $("#loadPb").click(LoadPage_B);
                 $("#savePb").click(SavePage_B).css("display","none");
+                if(VM){
+                    $("#newPb").text("Reset Page").removeClass("btn-success btn-danger").addClass("btn-danger");
+                    $("#savePb").css("display","inherit");
+                }
             }
         )
     );

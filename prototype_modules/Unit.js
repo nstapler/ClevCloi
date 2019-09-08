@@ -179,8 +179,8 @@ Unit.prototype.changeCurrent = function(video){
     }
     //highlight the tile
     var rC =$("#"+cId+" .savedResponses");
-    var allR = rC.find(".row");
-    var theR = rC.find(".row.savedResponse"+vId);
+    var allR = rC.children(".row");
+    var theR = rC.children(".row.savedResponse"+vId);
     allR.removeClass("bg-secondary bg-light").addClass("bg-light");
     allR.find(".savedVideoStatus").text("Saved Video Details");
     theR.removeClass("bg-light").addClass("bg-secondary");
