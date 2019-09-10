@@ -58,7 +58,7 @@ FileConverter.prototype.saveToLocal=function(){
         } catch( error ) {
            //create alert
            var alert =$("#localStorageAlert");
-           if(!alert.lenth || alert.lenth===0){
+           if(!alert.length || alert.length===0){
             var h = $("nav").innerHeight();
             alert =$("<div>")
             .prop("class","alert alert-danger text-center")

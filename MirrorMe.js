@@ -186,9 +186,6 @@ function setVideoPlayer(vidId,options){
         //keeps temorarily
         //stores immediately as a node 
         //on hover show a preview
-
-
-
     });
 }
 //**dataURL to blob**
