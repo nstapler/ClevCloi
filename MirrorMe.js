@@ -193,6 +193,9 @@ function setVideoPlayer(vidId,options){
 }
 //**dataURL to blob**
 function dataURLtoBlob(dataurl) {
+    if(!dataurl){
+        return null;
+    }
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while(n--){

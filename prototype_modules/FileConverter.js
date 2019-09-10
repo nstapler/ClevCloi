@@ -47,7 +47,33 @@ FileConverter.prototype.saveToFile=function(){
 };
 FileConverter.prototype.saveToLocal=function(){
     var VMstr = JSON.stringify(VM);
-    localStorage.setItem('MirrorMe_TempSave', VMstr);
+    try {
+        localStorage.setItem( 'MirrorMe_TempSave', VMstr );
+    // quota exceeded
+    } catch( error ) {
+        // expire old data and try again
+        localStorage.clear();
+        try {
+            localStorage.setItem( 'MirrorMe_TempSave', VMstr );
+        } catch( error ) {
+           //create alert
+           var alert =$("#localStorageAlert");
+           if(!alert.lenth || alert.lenth===0){
+            var h = $("nav").innerHeight();
+            alert =$("<div>")
+            .prop("class","alert alert-danger text-center")
+            .prop("id","localStorageAlert")
+            .attr("role","alert")
+            .attr("data-dismiss","alert")
+            .text("Please save to file, the data is too large for local/temporary storage.(click to dismiss)")
+            .css("position","sticky").css("top",h+5+"px").css("z-index","100");
+            $(document.body).prepend(alert);
+           }
+           
+           
+        
+        }
+    }
 };
 FileConverter.prototype.loadLocal=function(){
     var tempSave = localStorage.getItem('MirrorMe_TempSave');
@@ -60,7 +86,7 @@ FileConverter.prototype.loadContents=function(contents){
     var fObject = JSON.parse(contents);
     console.log(fObject);
     if(VM){
-        VM.resetUnits();
+        VM.resetDom();
     }
     if(fObject && typeof(fObject)=="object"){
         VM = new ViewManager(fObject);

@@ -195,7 +195,10 @@ Unit.prototype.deleteVideo=function(vId){
     this.VideoCollection=this.getResponses().filter((r)=>{
         return r.getId()!=vId;
     });
-    
-    $("#"+cId+" .savedResponses .savedResponse"+vId).remove();
+    this.deleteVideoDom(vId);
     VM.PrepSave(FC.saveToLocal);
+};
+Unit.prototype.deleteVideoDom=function(vId){
+    var cId ="unitContainer_"+ this.getId(); // unit container
+    $("#"+cId+" .savedResponses .savedResponse"+vId).remove();
 };

@@ -176,6 +176,11 @@ ViewManager.prototype.deleteUnit=function(uId){
     this.allUnits=this.getUnits().filter((u)=>{
         return u.getId()!=uId;
     });
+    this.deleteUnitDom(uId);
+    VM.PrepSave(FC.saveToLocal);
+};
+ViewManager.prototype.deleteUnitDom=function(uId){
+    var cId ="unitContainer_"+ uId; // unit container
     var pI = playerArr.findIndex((pO)=>{
         return pO.id==("currentVideo_"+uId);
     });
@@ -186,13 +191,17 @@ ViewManager.prototype.deleteUnit=function(uId){
         }
     }
     $("#"+cId).remove();
-    VM.PrepSave(FC.saveToLocal);
 };
 ViewManager.prototype.resetAll=function(){
     this.setOptions(this.defaultSettings);
     this.resetUnits();
 };
-ViewManager.prototype.resetUnits=function(){
+ViewManager.prototype.resetDom=function(){
+    this.getUnits().forEach((u)=>{
+        this.deleteUnitDom(u.getId());
+    });
+};
+ViewManager.prototype.deleteAllUnits=function(){
     this.getUnits().forEach((u)=>{
         this.deleteUnit(u.getId());
     });
@@ -209,6 +218,7 @@ ViewManager.prototype.Initialize=function(){
     
     $("#savePb").css("display","inherit");
     this.showAllUnits();
+    this.PrepSave(FC.saveToLocal);
 };
 ViewManager.prototype.PrepSave=function(callBack){
     //promis.all
