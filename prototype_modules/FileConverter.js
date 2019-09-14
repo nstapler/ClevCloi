@@ -59,15 +59,19 @@ FileConverter.prototype.saveToLocal=function(){
            //create alert
            var alert =$("#localStorageAlert");
            if(!alert.length || alert.length===0){
-            var h = $("nav").innerHeight();
+            //var h = $("nav.navbar").innerHeight();
             alert =$("<div>")
             .prop("class","alert alert-danger text-center")
             .prop("id","localStorageAlert")
             .attr("role","alert")
             .attr("data-dismiss","alert")
-            .text("Please save to file, the data is too large for local/temporary storage.(click to dismiss)")
-            .css("position","sticky").css("top",h+5+"px").css("z-index","100");
-            $(document.body).prepend(alert);
+            .text("Please save to file, the data is too large for local/temporary storage. (click to dismiss)").css({
+                //"top":h+5+"px",
+                "z-index":"100",
+                "width":"100%",
+                "position":"relative"
+            });
+            $(".UIContainer").append(alert);
            }
            
            

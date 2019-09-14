@@ -7,7 +7,7 @@
 
 //Control Extra Looks
 function ViewManager(vmO = null) {
-    if (vmO && typeof (vmO) === "object") {
+    if (vmO && typeof (vmO) === "object"){
         this._uIdentifier = vmO._uIdentifier;
         this.settings = vmO.settings;
         this.allUnits = vmO.allUnits.map((u)=>{
@@ -15,7 +15,7 @@ function ViewManager(vmO = null) {
         });
         //this.unitPlacements = VM.unitPlacements;
         this.defaultSettings =vmO.defaultSettings;
-    } else {
+    }else{
         this._uIdentifier = 0;
         this.settings = {
             videoOptions:{
@@ -80,7 +80,7 @@ ViewManager.prototype.displayUnitCurrent=function(uId){
         (evt)=>{
         Save_B(unit);
     }).css("display","none");
-    currC.find(".unitTopic").text(unit.getTopic());
+    $("#"+cId+" .unitHeaderBar .unitTopic").text(unit.getTopic());
     currC.find(".unitDescr").text(unit.getDescription());
 };
 
@@ -122,19 +122,37 @@ ViewManager.prototype.displayUnit = function (unit) {
         var iId ="unit_"+id; // response item
         var vId ="currentVideo_"+id;
         var uContainer =$("#"+cId);
-        if(!uContainer || uContainer.length<1){
+        if (!uContainer || uContainer.length < 1) {
             $("#appRowsDiv").append(
-                $("<div>").prop("id",cId).prop("class","row justify-content-center m-2 bg-success")
-                );
-                $("#"+cId).load("html_templates/unitTemplate.html",evt=>{
-                    $("#"+cId+" *").addClass(iId);
-                    this.displayUnitCurrent(id);
-                    unit.getResponses().forEach((r)=>{
-                        this.displayUnitSaved(id,r.getId());
-                    });
+                $("<div>").prop("id", cId).prop("class", "row justify-content-center m-2 bg-success")
+            );
+            var unitC =$("#" + cId);
+            unitC.load("html_templates/unitTemplate.html", evt => {
+                $("#" + cId + " *").addClass(iId);
+                unitC.find(".unitHeaderBar .unitToggleButton").click((evt)=>{
+                    var main =unitC.find(".mainResponse");
+                    var resps =unitC.find(".savedResponses");
+                    if(main.css("display")==="none"){
+                        main.css("display","");
+                    }else{
+                        main.css("display","none");
+                    }
+                    if(resps.css("display")==="none"){
+                        resps.css("display","");
+                    }else{
+                        resps.css("display","none");
+                    }
                 });
-                
-        }else{
+                unitC.find(".unitHeaderBar .UnitHideVideosButton").click((evt)=>{
+
+                });
+                this.displayUnitCurrent(id);
+                unit.getResponses().forEach((r) => {
+                    this.displayUnitSaved(id, r.getId());
+                });
+            });
+
+        } else {
             //empty or update?
         }
 
@@ -194,7 +212,7 @@ ViewManager.prototype.deleteUnitDom=function(uId){
 };
 ViewManager.prototype.resetAll=function(){
     this.setOptions(this.defaultSettings);
-    this.resetUnits();
+    this.deleteAllUnits();
 };
 ViewManager.prototype.resetDom=function(){
     this.getUnits().forEach((u)=>{
