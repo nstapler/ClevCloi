@@ -229,12 +229,10 @@ ViewManager.prototype.Initialize=function(){
     var saveUnit = VM.saveUnit.bind(VM);
     var p =$("#modalsHere");
     var newUnit = promptNewUnit.bind(null,p,saveUnit);
-    $("#appRowsDiv").empty().append(
-        $("<button>").prop("class","btn btn-success").text("New Unit").click(
-            newUnit
-        )
-    );
-    
+    var newUB = $("#newUnitB");
+    if(newUB.css("display")==="none"){
+        newUB.css("display","").off("click").click(newUnit);
+    }
     $("#savePb").css("display","inherit");
     this.showAllUnits();
     this.PrepSave(FC.saveToLocal);

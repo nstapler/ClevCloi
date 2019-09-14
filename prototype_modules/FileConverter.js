@@ -71,7 +71,7 @@ FileConverter.prototype.saveToLocal=function(){
                 "width":"100%",
                 "position":"relative"
             });
-            $(".UIContainer").append(alert);
+            $(".UIContainer > .navbar").after(alert);
            }
            
            

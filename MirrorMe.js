@@ -7,23 +7,28 @@ var FC;
 var playerArr=[];
 $(document).ready(function () {
     $("#appRowsDiv").before(
-        $("<div>").prop("class", "row justify-content-center m-2").load(
-            "html_templates/Buttons.html .pageButtons *", (evt)=>{
-                $("#newPb").click(NewPage_B);
-                $("#loadPb").click(LoadPage_B);
-                $("#savePb").click(SavePage_B).css("display","none");
-                if(VM){
-                    $("#newPb").text("Reset Page").removeClass("btn-success btn-danger").addClass("btn-danger");
-                    $("#savePb").css("display","inherit");
-                }
-            }
-        )
+        $("<div>").prop("class", "row justify-content-center m-2")
     );
-    //buildApp();
     if(!FC){
         FC= new FileConverter();
     }
     FC.loadLocal();
+    $("#optionList").load(
+        "html_templates/Buttons.html .pageButtons *", (evt)=>{
+            $("#newPb").click(NewPage_B);
+            $("#loadPb").click(LoadPage_B);
+            $("#savePb").click(SavePage_B).css("display","none");
+            $("#newUnitB").css("display","none");
+            if(VM){
+                $("#newPb").text("Reset Page").removeClass("btn-success btn-danger").addClass("btn-danger");
+                $("#savePb").css("display","");
+                var p =$("#modalsHere");
+                var saveUnit = VM.saveUnit.bind(VM);
+                var newUnit = promptNewUnit.bind(null,p,saveUnit);
+                $("#newUnitB").css("display","").off("click").click(newUnit);
+            }
+        }
+    );
     });
 //modal related buttons
 function SavePage_B(){
@@ -52,12 +57,15 @@ function NewPage_B(){
     
     var saveUnit = VM.saveUnit.bind(VM);
     var p =$("#modalsHere");
+    
+    //$("#appRowsDiv").empty();
+    
     var newUnit = promptNewUnit.bind(null,p,saveUnit);
-    $("#appRowsDiv").empty().append(
-        $("<button>").prop("class","btn btn-success").text("New Unit").click(
-            newUnit
-        )
-    );
+    var newUB = $("#newUnitB");
+    if(newUB.css("display")==="none"){
+        newUB.css("display","").off("click").click(newUnit);
+    }
+    
     $("#savePb").css("display","inherit");
     p.empty();
     newUnit();
