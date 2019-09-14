@@ -72,15 +72,15 @@ ViewManager.prototype.displayUnitCurrent=function(uId){
         var settings = this.getOptions();
         setVideoPlayer(vId,settings.videoOptions);
     });
-    var deleteUnit = this.deleteUnit.bind(this,uId);
-    currC.find(".deleteUnitButton").click(
-        deleteUnit
-    );
     currC.find(".videoSaveButton").click(
         (evt)=>{
         Save_B(unit);
     }).css("display","none");
     var header =$("#"+cId+" .unitHeaderBar");
+    var deleteUnit = this.deleteUnit.bind(this,uId);
+    header.find(".deleteUnitButton").click(
+        deleteUnit
+    );
     header.find(".unitTopic").text(unit.getTopic());
     header.find(".unitDescr").text(unit.getDescription());
 };
