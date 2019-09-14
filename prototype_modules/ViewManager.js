@@ -80,8 +80,9 @@ ViewManager.prototype.displayUnitCurrent=function(uId){
         (evt)=>{
         Save_B(unit);
     }).css("display","none");
-    $("#"+cId+" .unitHeaderBar .unitTopic").text(unit.getTopic());
-    currC.find(".unitDescr").text(unit.getDescription());
+    var header =$("#"+cId+" .unitHeaderBar");
+    header.find(".unitTopic").text(unit.getTopic());
+    header.find(".unitDescr").text(unit.getDescription());
 };
 
 ViewManager.prototype.displayUnitSaved=function(uId,vId){
