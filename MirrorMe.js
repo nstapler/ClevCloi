@@ -19,6 +19,9 @@ $(document).ready(function () {
             $("#loadPb").click(LoadPage_B);
             $("#savePb").click(SavePage_B).css("display","none");
             $("#newUnitB").css("display","none");
+            var options =$("#optionList").click((evt)=>{
+                options.removeClass("show");
+            });
             if(VM){
                 $("#newPb").text("Reset Page").removeClass("btn-success btn-danger").addClass("btn-danger");
                 $("#savePb").css("display","");

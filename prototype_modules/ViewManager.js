@@ -144,8 +144,13 @@ ViewManager.prototype.displayUnit = function (unit) {
                         resps.css("display","none");
                     }
                 });
-                unitC.find(".unitHeaderBar .UnitHideVideosButton").click((evt)=>{
-
+                unitC.find(".unitHeaderBar .unitToggleVideosButton").click((evt)=>{
+                    var resps =unitC.find(".savedResponses");
+                    if(resps.css("display")==="none"){
+                        resps.css("display","");
+                    }else{
+                        resps.css("display","none");
+                    }
                 });
                 this.displayUnitCurrent(id);
                 unit.getResponses().forEach((r) => {
