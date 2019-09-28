@@ -25,7 +25,7 @@ function ViewManager(vmO = null) {
                     record: {
                         audio: true,
                         video: true,
-                        maxLength: 300,
+                        maxLength: 45,
                         debug: true
                     }
                 }
